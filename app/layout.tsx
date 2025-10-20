@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./scrollbar.css";
+import { CommentsProvider } from "@/context/CommentsContext";
+import CommentOverlay from "@/components/CommentsPluginComponents/CommentOverlay";
+import Nav from "@/components/Nav";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import ScrollActionButtons from "@/components/ScrollActionButtons";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +34,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* <CommentsProvider> */}
         {children}
+        {/* Plugin Script */}
+        <Script
+          src="https://mantracollab-cdns.s3.ca-central-1.amazonaws.com/comment-widget.min.js"
+          strategy="afterInteractive"
+        />
+        <Nav />
+        <ScrollToTopButton />
+        <ScrollActionButtons />
+        {/* <CommentOverlay /> */}
+        {/* </CommentsProvider> */}
       </body>
     </html>
   );
