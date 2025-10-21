@@ -68,8 +68,13 @@ export default function DisclaimerSection({
 
       {/* Gold badge overlapping seam */}
       <div className="absolute inset-x-0 bottom-24 flex justify-center pointer-events-none">
-        <div className="pointer-events-auto translate-y-1/2 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.18)] overflow-hidden">
-          <div className="px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-b from-[#F0B12B] to-[#B47009]">
+        <div className="pointer-events-auto translate-y-1/2 rounded-[8px] shadow-[0_8px_24px_rgba(0,0,0,0.18)] overflow-hidden">
+          <div
+            className="px-8 sm:px-10 py-4 sm:py-5 rounded-2xl shadow-lg"
+            style={{
+              background: "linear-gradient(90deg, rgba(114,71,8,1) 0%, rgba(182,122,26,1) 50%, rgba(120,67,5,1) 100%)",
+            }}
+          >
             <div className="text-center">
               <div className="text-white font-semibold tracking-wide text-xl sm:text-2xl md:text-3xl">
                 {company}

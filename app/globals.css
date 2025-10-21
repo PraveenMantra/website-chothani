@@ -317,6 +317,21 @@ small {
   z-index: 0;
 }
 
+/* Felix Titling Font */
+@font-face {
+  font-family: "Felix Titling";
+  src: local("Felix Titling"), local("Felix-Titling"),
+       url("/fonts/FelixTitling.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* Optional fallback */
+.felix {
+  font-family: "Felix Titling", "Times New Roman", serif;
+  letter-spacing: 0.05em;
+}
+
+
 
 /* Curve transition into next section */
 /* .hero::after {

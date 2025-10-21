@@ -28,7 +28,6 @@ export default function Footer() {
       if (pathname === "/") {
         const el = document.getElementById(id);
         if (!el) return;
-        // account for your nav height if needed
         const y = el.getBoundingClientRect().top + window.scrollY - 0;
         window.scrollTo({ top: y, behavior: "smooth" });
       } else {
@@ -41,29 +40,44 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden">
-      {/* BG: deep green gradient + subtle pattern/watermark */}
-      <div className="relative bg-[radial-gradient(120%_120%_at_20%_10%,#1a4f21_0%,#0b3215_55%,#08250f_100%)]">
+      {/* Background image */}
+      <div
+        className="relative bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/Images/footer_mainBg.webp')" }}
+      >
+        {/* Optional subtle pattern overlay */}
         <div
           className="absolute inset-0 opacity-[0.12] pointer-events-none"
-          style={{ backgroundImage: "url(/Images/footer_pattern.webp)", backgroundSize: "cover", backgroundPosition: "center" }}
+          style={{
+            backgroundImage: "url('/Images/footer_pattern.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
           aria-hidden
         />
-        <div className="mx-auto w-full max-w-[1450px] px-6 lg:px-10 py-12 lg:py-16 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 text-white/90">
-            {/* Left: partner + links */}
-            <div className="lg:col-span-4">
-              <div className="text-[#f3d567] text-sm tracking-wide mb-3">CHIEF MARKETING PARTNER</div>
-              <div className="w-56 h-56 relative mb-6">
+
+        {/* Main row: 4 columns (no extra divider columns) */}
+        <div className="relative mx-auto w-full max-w-[1565px] px-6 lg:px-10 pt-10 lg:pt-14 pb-0 text-white/90">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+            {/* Col 1: Partner */}
+            <div>
+              <div className="text-[#f3d567] text-[20px] tracking-wide mb-3  ">
+                CHIEF MARKETING PARTNER
+              </div>
+              <div className="relative w-[185px] h-[185px] flex justify-center items-center">
                 <Image
-                  src="/Images/partner_logo.webp" // replace with your logo
+                  src="/Images/footer_logo_avigna.png"
                   alt="Avighna Spaces"
                   fill
                   className="object-contain"
                   priority
                 />
               </div>
+            </div>
 
-              <ul className="mt-4 space-y-4">
+            {/* Col 2: Menu (with left divider on desktop) */}
+            <div className="lg:border-l lg:border-white/15 lg:pl-10">
+              <ul className="mt-1 space-y-4">
                 {footerLinks.map((l) => (
                   <li key={l.name} className="flex items-center gap-3">
                     <span className="inline-block h-3 w-3 rounded-full bg-gradient-to-b from-[#F0B12B] to-[#B47009]" />
@@ -79,13 +93,8 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Divider */}
-            <div className="hidden lg:block lg:col-span-1">
-              <div className="h-full w-px bg-white/15 mx-auto" />
-            </div>
-
-            {/* Middle: Contact */}
-            <div className="lg:col-span-3">
+            {/* Col 3: Contact (with left divider) */}
+            <div className="lg:border-l lg:border-white/15 lg:pl-10">
               <h3 className="text-white font-semibold text-2xl">Contact Us</h3>
 
               <div className="mt-6 flex items-start gap-3">
@@ -108,21 +117,15 @@ export default function Footer() {
 
               {/* Yellow CTA */}
               <div className="mt-6">
-                <div className="inline-block rounded-sm bg-gradient-to-r from-[#d5951b] via-[#f3cc57] to-[#f7e08c] px-4 py-3 text-[#0b2d15] font-medium shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
+                <div className="inline-block bg-gradient-to-r from-[#d5951b] via-[#f3cc57] to-[#f7e08c] px-4 py-3 text-[#0b2d15] font-medium shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
                   Schedule your visit today and experience luxury living at 27 Pallazzo.
                 </div>
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="hidden lg:block lg:col-span-1">
-              <div className="h-full w-px bg-white/15 mx-auto" />
-            </div>
-
-            {/* Right: Address */}
-            <div className="lg:col-span-3">
+            {/* Col 4: Address (with left divider) */}
+            <div className="lg:border-l lg:border-white/15 lg:pl-10">
               <h3 className="text-white font-semibold text-2xl">Address</h3>
-
               <div className="mt-6 flex items-start gap-3">
                 <span className="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#f0b12b] text-[#0a2a14]">
                   <MapPin className="size-4" />
@@ -134,31 +137,29 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Huge watermark text (optional, like screenshot) */}
-          <div className="select-none pointer-events-none text-[16vw] leading-none font-semibold text-white/5 text-center mt-10 tracking-[0.02em]">
+          {/* Watermark text */}
+          <div className="select-none pointer-events-none text-[11vw] leading-none font-normal text-white/5 text-center mt-10 tracking-[0.02em] felix">
             CHOTHANI
           </div>
         </div>
 
-        {/* Bottom gold bar with left wedge + copyright */}
-        <div className="w-full bg-[#b89345]">
-          <div className="mx-auto w-full max-w-[1450px] relative">
-            <div className="flex items-center justify-between px-6 lg:px-10 py-3">
-              <div className="relative text-[#0e2b14] font-semibold">
-                <div className="hidden sm:block absolute -left-6 top-0 h-full w-12 bg-[#d5c084] [clip-path:polygon(0_0,100%_0,67%_100%,0_100%)]" />
-                <span className="relative z-10">{year} © Powered by Mantra Collab</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <a href="#" aria-label="facebook" className="opacity-90 hover:opacity-100 transition">
-                  <Image src="/Images/fb.webp" alt="" width={24} height={24} />
-                </a>
-                <a href="#" aria-label="google" className="opacity-90 hover:opacity-100 transition">
-                  <Image src="/Images/google.webp" alt="" width={24} height={24} className="bg-white rounded p-1" />
-                </a>
-                <a href="#" aria-label="instagram" className="opacity-90 hover:opacity-100 transition">
-                  <Image src="/Images/insta.webp" alt="" width={24} height={24} />
-                </a>
+        {/* Bottom gold bar + clipped polygon copyright */}
+        <div className="w-full bg-[#b7a04a]">
+          <div className="relative w-full">
+            <div className="flex items-center justify-between py-3">
+              <div className="relative font-semibold text-white">
+                <span
+                  className="relative z-10 inline-block bg-[#033401] text-white font-semibold py-2 shadow-sm [clip-path:polygon(0%_0%,85%_0%,100%_100%,0%_100%)]"
+                  style={{
+                    width: "426px",
+                    display: "block",
+                    paddingLeft: "67px",
+                    paddingRight: "16px",
+                    fontSize: "14px",
+                  }}
+                >
+                  {year} © Powered by Mantra Collab
+                </span>
               </div>
             </div>
           </div>
