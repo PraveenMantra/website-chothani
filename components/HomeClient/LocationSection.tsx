@@ -49,7 +49,7 @@ export default function LocationSection({
   };
 
   return (
-    <section
+    <section id="location"
       className="relative border-b border-black/10 bg-cover bg-center"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
