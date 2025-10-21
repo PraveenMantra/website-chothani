@@ -229,7 +229,7 @@ small {
 .greenMap{
   position: relative;
   overflow: hidden;
-  background-image: url("/Images/2nd_block_greenBg.webp");
+  background-image: url("/Images/green_bgNew.jpg");
   background-size: cover;
   background-position: center;
 }

@@ -8,6 +8,11 @@ import ProjectOverview from '../ProjectOverview';
 import GreenMap from './GreenMap';
 import WhyChoose from './WhyChoose';
 import ConnectivityHighlights from './ConnectivityHighlights';
+import AmenitiesCarousel from './AmenitiesCarousel';
+import LocationSection from './LocationSection';
+import ContactUsSection from './ContactUsSection';
+import StatsTiles from './StatsTiles';
+import DisclaimerSection from './DisclaimerSection';
 
 export default function HomeClient() {
     // useCommentsPage("Home");
@@ -18,6 +23,11 @@ export default function HomeClient() {
                 <GreenMap />
                 <WhyChoose />
                 <ConnectivityHighlights />
+                <AmenitiesCarousel />
+                <LocationSection />
+                <ContactUsSection />
+                <StatsTiles />
+                <DisclaimerSection />
             </main>
             <footer>
                 <Footer />
