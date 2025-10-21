@@ -59,7 +59,7 @@ export default function ContactUsSection() {
   }
 
   return (
-    <section
+    <section id="contact-us"
       className="relative bg-cover bg-center border-b border-black/10 overflow-hidden"
       style={{ backgroundImage: "url(/Images/contactBG_new.webp)" }}
     >

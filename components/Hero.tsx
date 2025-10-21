@@ -6,7 +6,7 @@ import ProjectOverview from "./ProjectOverview";
 
 export default function Hero() {
     return (
-        <section className="relative min-h-[110vh] overflow-hidden">
+        <section id="home" className="relative min-h-[110vh] overflow-hidden">
             <div className="relative hero">
                 {/* CONTENT WRAPPER */}
                 <div className="relative z-20 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">

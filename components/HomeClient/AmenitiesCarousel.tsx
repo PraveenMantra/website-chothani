@@ -48,7 +48,7 @@ export default function AmenitiesCarousel() {
   };
 
   return (
-    <section className="bg-white">
+    <section id="amenities" className="bg-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
         <header className="text-center">
           <h2 className="text-3xl sm:text-4xl font-semibold text-[#10410f]">
