@@ -8,14 +8,7 @@ export default function ProjectOverview() {
         <div className="lg:col-span-5 flex items-start justify-center">
           <div className="relative w-full max-w-[460px]">
             <Image
-              src="/images/skyline.png"  // skyline cluster
-              alt=""
-              width={700}
-              height={700}
-              className="w-full h-auto"
-            />
-            <Image
-              src="/images/gold-key.png"  // big key foreground
+              src="/Images/project_overview.png"  // big key foreground
               alt=""
               width={380}
               height={220}

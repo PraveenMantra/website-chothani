@@ -2,74 +2,137 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import ProjectOverview from "./ProjectOverview";
+import { motion, type Variants } from "framer-motion";
+
+// simple reusable variants
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const fadeIn: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.6 } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
 
 export default function Hero() {
-    return (
-        <section id="home" className="relative min-h-[110vh] overflow-hidden">
-            <div className="relative hero">
-                {/* CONTENT WRAPPER */}
-                <div className="relative z-20 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-                        {/* LEFT: CTA CARD */}
-                        <div className="lg:col-span-5">
-                            <div className="w-full max-w-[420px] bg-[#0E3C14]/90 text-white rounded-2xl p-6 shadow-2xl backdrop-blur-[2px]">
-                                {/* Heading */}
-                                <div className="flex items-end gap-2">
-                                    <span className="text-[64px] leading-none font-extrabold text-[#F6DA76] drop-shadow-md">
-                                        27
-                                    </span>
-                                    <div className="-mb-1">
-                                        <div className="text-[34px] font-extrabold tracking-wide">PALAZZO</div>
-                                        <div className="text-[14px] uppercase text-[#F0F0F0]">
-                                            Luxury 3 BHK Residences in Chembur
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Description */}
-                                <p className="mt-4 text-[13px] bg-white/10 rounded-md p-3 leading-relaxed">
-                                    1500 sq. ft. carpet area apartments starting from ₹6 Cr++ with basic
-                                    fittings. A premium address for those who aspire more.
-                                </p>
-
-                                {/* CTA Button */}
-                                <Link
-                                    href="#contact-us"
-                                    className="mt-5 inline-block rounded-lg px-5 py-3 font-semibold text-black
-                           bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519]
-                           shadow-[0_6px_20px_rgba(233,165,25,0.35)] hover:scale-[1.02] transition"
-                                >
-                                    BOOK A SITE VISIT TODAY
-                                </Link>
-                            </div>
-                        </div>
+  return (
+    <section id="home" className="relative overflow-hidden">
+      <div className="relative hero">
+        {/* ===== Top: CTA Card ===== */}
+        <motion.div
+          className="relative z-20 max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24"
+          variants={stagger}
+          initial="hidden"
+          animate="show"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-start">
+            {/* LEFT: CTA CARD */}
+            <motion.div className="lg:col-span-5" variants={fadeUp}>
+              <div className="w-full max-w-[460px] bg-[#0E3C14]/90 text-white rounded-2xl p-6 shadow-2xl backdrop-blur-[2px]">
+                {/* Heading */}
+                <div className="flex items-end gap-2">
+                  <span className="text-[64px] leading-none font-extrabold text-[#F6DA76] drop-shadow-md">
+                    27
+                  </span>
+                  <div className="-mb-1">
+                    <div className="text-[34px] font-extrabold tracking-wide">PALAZZO</div>
+                    <div className="text-[14px] uppercase text-[#F0F0F0]">
+                      Luxury 3 BHK Residences in Chembur
                     </div>
-                </div>      
+                  </div>
+                </div>
 
- {/* HAND IMAGE AT BOTTOM */}
-                {/* <div className="absolute bottom-0 left-0 w-full z-10">
-                    <Image
-                        src="/Images/handImage.jpg"
-                        alt="Hand pulling sheet"
-                        width={1920}
-                        height={800}
-                        priority
-                        className="w-full h-auto object-cover object-bottom select-none"
-                    />
-                </div> */}
+                {/* Description */}
+                <p className="mt-4 text-[13px] bg-white/10 rounded-md p-3 leading-relaxed">
+                  1500 sq. ft. carpet area apartments starting from ₹6 Cr++ with basic
+                  fittings. A premium address for those who aspire more.
+                </p>
 
+                {/* CTA Button */}
+                <Link
+                  href="#contact-us"
+                  className="mt-5 inline-block rounded-lg px-5 py-3 font-semibold text-black
+                             bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519]
+                             shadow-[0_6px_20px_rgba(233,165,25,0.35)] hover:scale-[1.02] transition"
+                >
+                  BOOK A SITE VISIT TODAY
+                </Link>
+              </div>
+            </motion.div>
 
+            {/* right spacer to preserve composition */}
+            <div className="hidden lg:block lg:col-span-7" />
+          </div>
+        </motion.div>
 
-                {/* WHITE CURVE TRANSITION */}
-                {/* <div className="absolute left-1/2 -translate-x-1/2 bottom-[-110px] w-[160%] z-30 pointer-events-none">
-        <div className="mx-auto h-[220px] bg-white rounded-t-[120px] shadow-[0_-30px_80px_rgba(0,0,0,0.15)]" />
-      </div> */}
-            <ProjectOverview />
+        {/* ===== Bottom: Project Overview ===== */}
+        {/* mt / pt scaled by viewport so it sits lower like the screenshot */}
+        <motion.div
+          className="
+            max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8
+            mt-[220px] md:mt-[360px] lg:mt-[500px]
+            pt-[140px] md:pt-[220px] lg:pt-[300px]
+            pb-12 lg:pb-20
+          "
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.25 }}
+        >
+          <div className="flex flex-col lg:flex-row items-start gap-10">
+            {/* LEFT: Image (≈38%) */}
+            <motion.div className="w-full lg:w-[38%] flex justify-center lg:justify-start" variants={fadeUp}>
+              <div className="relative w-full max-w-[460px]">
+                <Image
+                  src="/Images/project_overview.png"
+                  alt="Project overview"
+                  width={460}
+                  height={320}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </motion.div>
 
-            </div>
-             
+            {/* RIGHT: Text (≈62%) */}
+            <motion.div className="w-full lg:w-[62%]" variants={fadeUp}>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0E3C14]">
+                PROJECT OVERVIEW
+              </h2>
 
-        </section>
-    );
+              <p className="mt-4 text-[15px] leading-7 text-neutral-700">
+                Introducing <b>27 Palazzo</b>, a landmark residential development by
+                <b> Chothani BuildCorp Pvt. Ltd.</b> Located in Chembur East, this project
+                blends architectural elegance, spacious design, and premium fittings to
+                redefine modern urban living.
+              </p>
+
+              <motion.ul className="mt-6 space-y-3 text-[15px]" variants={stagger}>
+                {[
+                  { label: "Configuration", value: "3 BHK Apartments" },
+                  { label: "Carpet Area", value: "1500 sq. ft. (approx.)" },
+                  { label: "Starting Price", value: "₹6 Cr ++" },
+                  { label: "Finishing", value: "With Basic Fittings" },
+                  { label: "RERA Registered Project", value: "(ID to be inserted if available)" },
+                ].map((item) => (
+                  <motion.li key={item.label} className="flex items-start gap-3" variants={fadeIn}>
+                    <span className="mt-1 inline-block size-3 rounded-full bg-[#1AAE49] ring-2 ring-[#0a7a30]" />
+                    <span>
+                      <b>{item.label}:</b> {item.value}
+                    </span>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
 }

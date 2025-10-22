@@ -5,7 +5,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { motion, Variants } from "framer-motion"; // 🎬 NEW
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,11 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils"; // ✅ Shadcn UI toaster hook
-import { Loader2 } from "lucide-react"; // for button spinner
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-// ✅ Zod validation schema
+// ✅ Validation schema
 const formSchema = z.object({
   name: z.string().min(2, "Name is too short"),
   mobile: z
@@ -32,7 +32,7 @@ const formSchema = z.object({
   configuration: z.string().optional(),
 });
 
-// ✅ Helper: Validate required environment variables
+// ✅ Environment validation helper
 const validateEnvVars = () => {
   const requiredVars = {
     apiUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -66,6 +66,22 @@ const formatEmailList = (emails?: string): string[] => {
 
 type FormValues = z.infer<typeof formSchema>;
 
+// 🎬 Motion Variants
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const fadeInLeft: Variants = {
+  hidden: { opacity: 0, x: -60 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const fadeInRight: Variants = {
+  hidden: { opacity: 0, x: 60 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
 export default function ContactUsSection() {
   const [loading, setLoading] = useState(false);
   const form = useForm<FormValues>({
@@ -78,7 +94,6 @@ export default function ContactUsSection() {
     },
   });
 
-  // ✅ Submit Handler
   async function onSubmit(values: FormValues) {
     if (!validateEnvVars()) return;
 
@@ -125,9 +140,17 @@ export default function ContactUsSection() {
       style={{ backgroundImage: "url(/Images/contactBG_new.webp)" }}
     >
       <div className="mx-auto w-full max-w-[1450px] px-4 sm:px-4 lg:px-4 py-6 lg:py-8">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+        <motion.div
+          className="flex flex-col lg:flex-row items-center justify-between gap-10"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {/* Left: Building Visual */}
-          <div className="relative flex-1 lg:basis-[55%] flex justify-center lg:justify-start">
+          <motion.div
+            variants={fadeInLeft}
+            className="relative flex-1 lg:basis-[55%] flex justify-center lg:justify-start"
+          >
             <div className="relative w-[120%] lg:w-[115%] -ml-[10%] lg:-ml-[5%]">
               <Image
                 src="/Images/contact_us.png"
@@ -138,124 +161,74 @@ export default function ContactUsSection() {
                 className="w-full h-auto object-contain drop-shadow-2xl"
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Right: Contact Form */}
-          <div className="w-full lg:basis-[40%]">
-            <h2
+          <motion.div variants={fadeInRight} className="w-full lg:basis-[40%]">
+            <motion.h2
+              variants={fadeInUp}
               className={cn(
                 "mb-6 text-3xl sm:text-4xl font-extrabold tracking-wide",
                 "bg-gradient-to-b from-[#F7CB54] to-[#B47009] bg-clip-text text-transparent drop-shadow-[0_1px_0_rgba(0,0,0,0.4)]"
               )}
             >
               CONTACT US
-            </h2>
+            </motion.h2>
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                {/* Name */}
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only">Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Name"
-                          className="h-12 rounded-lg bg-white text-black shadow"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {["name", "mobile", "email", "configuration"].map((fieldName, index) => (
+                  <motion.div key={fieldName} variants={fadeInUp} transition={{ delay: index * 0.1 }}>
+                    <FormField
+                      control={form.control}
+                      name={fieldName as keyof FormValues}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="sr-only">{fieldName}</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder={
+                                fieldName === "configuration" ? "Message" : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+                              }
+                              type={fieldName === "email" ? "email" : "text"}
+                              inputMode={fieldName === "mobile" ? "tel" : undefined}
+                              className="h-12 rounded-lg bg-white text-black shadow"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
+                ))}
 
-                {/* Mobile */}
-                <FormField
-                  control={form.control}
-                  name="mobile"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only">Mobile</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Mobile"
-                          inputMode="tel"
-                          className="h-12 rounded-lg bg-white text-black shadow"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Email */}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only">Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Email"
-                          type="email"
-                          className="h-12 rounded-lg bg-white text-black shadow"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Configuration */}
-                <FormField
-                  control={form.control}
-                  name="configuration"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only">Configuration</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Message"
-                          className="h-12 rounded-lg bg-white text-black shadow"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Submit Button */}
-                <div className="flex justify-end">
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className={cn(
-                      "px-8 py-6 text-base font-semibold rounded-md shadow-md transition-all duration-300",
-                      "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
-                      "hover:opacity-90 disabled:opacity-70"
-                    )}
-                  >
-                    {loading ? (
-                      <span className="flex items-center gap-2">
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        SUBMITTING…
-                      </span>
-                    ) : (
-                      "SUBMIT"
-                    )}
-                  </Button>
-                </div>
+                <motion.div variants={fadeInUp}>
+                  <div className="flex justify-end">
+                    <Button
+                      type="submit"
+                      disabled={loading}
+                      className={cn(
+                        "px-8 py-6 text-base font-semibold rounded-md shadow-md transition-all duration-300",
+                        "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
+                        "hover:opacity-90 disabled:opacity-70"
+                      )}
+                    >
+                      {loading ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          SUBMITTING…
+                        </span>
+                      ) : (
+                        "SUBMIT"
+                      )}
+                    </Button>
+                  </div>
+                </motion.div>
               </form>
             </Form>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

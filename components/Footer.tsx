@@ -4,6 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { motion, type Variants } from "framer-motion";
 
 interface FooterLink {
   name: string;
@@ -17,6 +18,31 @@ const footerLinks: FooterLink[] = [
   { name: "LOCATION", href: "#location" },
   { name: "CONTACT US", href: "#contact-us" },
 ];
+
+/* ── Animations ────────────────────────────────────────── */
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const fadeIn: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.6 } },
+};
+
+const staggerList: Variants = {
+  hidden: { opacity: 1 },
+  show: {
+    opacity: 1,
+    transition: { delayChildren: 0.1, staggerChildren: 0.08 },
+  },
+};
+
+const slideInWedge: Variants = {
+  hidden: { opacity: 0, x: -60 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+/* ─────────────────────────────────────────────────────── */
 
 export default function Footer() {
   const pathname = usePathname();
@@ -58,12 +84,17 @@ export default function Footer() {
           aria-hidden
         />
 
-        {/* ✅ Main container */}
-        <div className="relative mx-auto w-full max-w-[1620px] px-6 lg:px-10 pt-10 lg:pt-14 pb-0 text-white/90">
+        {/* Main container */}
+        <motion.div
+          className="relative mx-auto w-full max-w-[1620px] px-6 lg:px-10 pt-10 lg:pt-14 pb-0 text-white/90"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeIn}
+        >
           <div className="flex flex-col lg:flex-row justify-between gap-10 lg:gap-14">
-
-            {/* Partner Section - 20% */}
-            <div className="w-full lg:w-[25%]">
+            {/* Partner Section */}
+            <motion.div className="w-full lg:w-[25%]" variants={fadeUp}>
               <div className="text-[#f3d567] text-[20px] tracking-wide mb-3 text-center">
                 CHIEF MARKETING PARTNER
               </div>
@@ -76,72 +107,48 @@ export default function Footer() {
                   priority
                 />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Menu Section - 20% */}
-            <div className="w-full lg:w-[12%]">
-              <ul className="mt-1 space-y-4">
+            {/* Menu Section (staggered items) */}
+            <motion.div className="w-full lg:w-[12%]" variants={fadeUp}>
+              <motion.ul className="mt-1 space-y-4" variants={staggerList}>
                 {footerLinks.map((l) => (
-                  <li key={l.name} className="flex items-center gap-3 group">
-                    {/* Gold circle icon that lights up on hover */}
+                  <motion.li key={l.name} variants={fadeIn} className="flex items-center gap-3 group">
                     <span className="inline-block h-3 w-3 rounded-full bg-white/40 transition-all duration-300 group-hover:bg-gradient-to-b group-hover:from-[#F0B12B] group-hover:to-[#B47009]" />
-
-                    {/* Link text with gold gradient hover */}
                     <Link
                       href={l.href}
                       onClick={(e) => handleLinkClick(e, l.href)}
-                      className="relative text-[16px] font-medium text-white/80 transition-all duration-300 
-                     hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009] 
-                     hover:bg-clip-text hover:text-transparent"
+                      className="relative text-[16px] font-medium text-white/80 transition-all duration-300
+                                 hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009]
+                                 hover:bg-clip-text hover:text-transparent"
                     >
                       {l.name}
-                      {/* Animated underline on hover */}
                       <span className="absolute bottom-[-4px] left-0 h-[2px] w-0 bg-gradient-to-r from-[#F0B12B] to-[#B47009] transition-all duration-300 group-hover:w-full" />
                     </Link>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
-            </div>
+              </motion.ul>
+            </motion.div>
 
-
-
-            {/* Contact Section - 30% */}
-            <div className="w-full lg:w-[30%] lg:border-l lg:border-white/15 lg:pl-10">
+            {/* Contact Section */}
+            <motion.div className="w-full lg:w-[30%] lg:border-l lg:border-white/15 lg:pl-10" variants={fadeUp}>
               <h3 className="text-white font-semibold text-2xl mb-6">Contact Us</h3>
-
-              {/* Phone */}
               <div className="flex items-start gap-3 mb-4">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image
-                    src="/Images/call.png"
-                    alt="Call"
-                    width={32}
-                    height={32}
-                    className="object-contain w-full h-full"
-                  />
+                  <Image src="/Images/call.png" alt="Call" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
                 <a href="tel:+918828607952" className="hover:underline">
                   +91 88286 07952
                 </a>
               </div>
-
-              {/* Email */}
               <div className="flex items-start gap-3 mb-6">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image
-                    src="/Images/mail.png"
-                    alt="Mail"
-                    width={32}
-                    height={32}
-                    className="object-contain w-full h-full"
-                  />
+                  <Image src="/Images/mail.png" alt="Mail" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
                 <a href="mailto:contactus@avighnaspaces.com" className="hover:underline">
                   contactus@avighnaspaces.com
                 </a>
               </div>
-
-              {/* CTA */}
               <div>
                 <div
                   className="inline-block text-[#0c0000] font-semibold px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
@@ -153,45 +160,48 @@ export default function Footer() {
                   Schedule your visit today and experience luxury living at 27 Pallazzo.
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Address Section - 30% */}
-            <div className="w-full lg:w-[33%] lg:border-l lg:border-white/15 lg:pl-10">
+            {/* Address Section */}
+            <motion.div className="w-full lg:w-[33%] lg:border-l lg:border-white/15 lg:pl-10" variants={fadeUp}>
               <h3 className="text-white font-semibold text-2xl mb-6">Address</h3>
               <div className="flex items-start gap-3">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image
-                    src="/Images/address.png"
-                    alt="Map Pin"
-                    width={32}
-                    height={32}
-                    className="object-contain w-full h-full"
-                  />
+                  <Image src="/Images/address.png" alt="Map Pin" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
                 <p className="text-white/90 leading-relaxed">
                   Office No 204, 2nd Floor, Ujagar Chamber, Near Deonar Bus Depot, Deonar, Mumbai - 88
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Watermark Text */}
-          <div className="select-none pointer-events-none text-[11vw] leading-none font-normal text-white/5 text-center mt-10 tracking-[0.02em] felix">
+          <motion.div
+            className="select-none pointer-events-none text-[11vw] leading-none font-normal text-white/5 text-center mt-10 tracking-[0.02em] felix"
+            variants={fadeIn}
+          >
             CHOTHANI
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Bottom Bar */}
-        {/* Bottom gold bar + clipped polygon copyright */}
         <div className="w-full bg-[#b7a04a]">
           <div className="relative w-full">
             <div className="flex items-center justify-between py-3">
-              <div className="relative font-semibold text-white">
+              <motion.div
+                className="relative font-semibold text-white"
+                variants={slideInWedge}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.5 }}
+              >
                 <a
                   href="https://mantracollab.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block group"
+                  aria-label="Powered by Mantra Collab"
                 >
                   <span
                     className="relative z-10 inline-block text-white font-semibold py-2 shadow-sm overflow-hidden [clip-path:polygon(0%_0%,85%_0%,100%_100%,0%_100%)]"
@@ -219,22 +229,17 @@ export default function Footer() {
                     <span className="relative z-10">{year} © Powered by Mantra Collab</span>
                   </span>
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
 
         <style jsx global>{`
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-`}</style>
-
+          @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+          }
+        `}</style>
       </div>
     </footer>
   );

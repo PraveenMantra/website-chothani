@@ -1,34 +1,75 @@
-// app/(components)/StatsTiles.tsx
-import React from "react";
+"use client";
 
+import React from "react";
+import { motion, Variants } from "framer-motion";
+import CountUp from "react-countup";
+
+// Type definition
 type Stat = { value: string; lines: [string, string?] };
 
+// Stats data
 const STATS: Stat[] = [
   { value: "7+", lines: ["YEARS OF", "LEGACY"] },
   { value: "350+", lines: ["JOIN TEAM", "STRENGTH"] },
-  { value: "6,500", lines: ["HOMES", "DELIVERED"] },
-  { value: "3,200", lines: ["HOMES UNDER", "CONSTRUCTION"] },
+  { value: "6500", lines: ["HOMES", "DELIVERED"] },
+  { value: "3200", lines: ["HOMES UNDER", "CONSTRUCTION"] },
 ];
+
+// Framer Motion variants
+// Use cubic-bezier arrays (type-safe) and explicitly type/satisfy Variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 },
+  },
+};
+
+const tileVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.1, 0.25, 1], // ⬅️ cubic-bezier (easeOut-ish), no TS error
+    },
+  },
+} satisfies Variants;
 
 export default function StatsTiles() {
   return (
     <section className="bg-white">
       <div className="mx-auto w-full max-w-[1450px] px-0 [@media(max-width:1479px)]:px-8 [@media(max-width:1200px)]:px-6 py-10">
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+        <motion.ul
+          role="list"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.25 }}
+        >
           {STATS.map(({ value, lines }, i) => (
-            <li key={i}>
+            <motion.li key={i} variants={tileVariants}>
               <StatTile value={value} lines={lines} />
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       </div>
     </section>
   );
 }
 
 function StatTile({ value, lines }: { value: string; lines: [string, string?] }) {
+  // Extract numeric portion and suffix like "+"
+  const match = value.match(/^(\d+)(\+)?$/);
+  const numericValue = match ? parseInt(match[1], 10) : 0;
+  const suffix = match && match[2] ? match[2] : "";
+
   return (
-    <article
+    <motion.article
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.2 }}
       className="rounded-[26px] bg-[#ececec] p-[10px]"
       aria-label={`${value} ${lines.join(" ")}`}
     >
@@ -37,16 +78,22 @@ function StatTile({ value, lines }: { value: string; lines: [string, string?] })
         {/* Card */}
         <div className="rounded-[20px] bg-white h-full flex flex-col items-center justify-center text-center
                         px-5 sm:px-6 py-10 sm:py-12 md:py-14 min-h-[260px]">
-          {/* Value */}
-          <div
+          {/* Animated Value */}
+          <motion.div
             className="bg-gradient-to-b from-[#F7CB54] to-[#B47009] bg-clip-text text-transparent font-bold leading-[0.9] tracking-tight"
             style={{
-              // fluid: min 42px, scales with viewport, caps at 84px
               fontSize: "clamp(42px, 8vw, 84px)",
             }}
           >
-            {value}
-          </div>
+            <CountUp
+              start={0}
+              end={numericValue}
+              duration={2}
+              enableScrollSpy
+              scrollSpyOnce
+            />
+            {suffix}
+          </motion.div>
 
           {/* Caption */}
           <div className="mt-9 text-[#0c3807] font-semibold uppercase leading-[1.1] tracking-wide
@@ -56,6 +103,6 @@ function StatTile({ value, lines }: { value: string; lines: [string, string?] })
           </div>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
