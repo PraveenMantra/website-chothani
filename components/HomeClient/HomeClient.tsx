@@ -23,7 +23,7 @@ export default function HomeClient() {
                 <GreenMap />
                 <WhyChoose />
                 <ConnectivityHighlights />
-                {/* <AmenitiesCarousel /> */}
+                <AmenitiesCarousel />
                 <LocationSection />
                 <ContactUsSection />
                 <StatsTiles />

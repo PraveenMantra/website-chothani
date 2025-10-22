@@ -1,15 +1,16 @@
-// app/(components)/AmenitiesCarousel.tsx
 "use client";
 
 import Image from "next/image";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
+import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils"; // shadcn utility for conditional classes
+import { cn } from "@/lib/utils";
 
+/* ------------------ Data ------------------ */
 type CardItem = { id: string; title: string; image: string };
 type TabKey = "floorPlans" | "amenities" | "elevation";
 
-const BUILDING_IMG = "/Images/building.png"; // replace with your asset
+const BUILDING_IMG = "/Images/building.png"; // replace with your actual image
 
 const DATA: Record<TabKey, CardItem[]> = {
   floorPlans: [
@@ -31,10 +32,29 @@ const DATA: Record<TabKey, CardItem[]> = {
   ],
 };
 
+/* ------------------ Animations ------------------ */
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+};
+
+/* ------------------ Component ------------------ */
 export default function AmenitiesCarousel() {
   const [tab, setTab] = useState<TabKey>("amenities");
   const scrollerRef = useRef<HTMLDivElement>(null);
   const items = useMemo(() => DATA[tab], [tab]);
+  const [isPaused, setIsPaused] = useState(false);
 
   const scrollByCards = (dir: -1 | 1) => {
     const el = scrollerRef.current;
@@ -47,17 +67,49 @@ export default function AmenitiesCarousel() {
     el.scrollBy({ left: delta, behavior: "smooth" });
   };
 
+  /* ------------------ Autoplay Scroll ------------------ */
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    let scrollAmount = 0.5; // subtle smooth movement
+    let frameId: number;
+
+    const scroll = () => {
+      if (!isPaused) {
+        el.scrollLeft += scrollAmount;
+        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 1) {
+          el.scrollTo({ left: 0, behavior: "smooth" });
+        }
+      }
+      frameId = requestAnimationFrame(scroll);
+    };
+
+    frameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(frameId);
+  }, [isPaused, tab]);
+
   return (
-    <section id="amenities" className="bg-white">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
-        <header className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-[#10410f]">
+    <section id="amenities" className="bg-white relative overflow-hidden">
+      <motion.div
+        className="mx-auto max-w-[1578px] px-0 py-16 lg:py-20"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.25 }}
+        variants={staggerContainer}
+      >
+        {/* Heading */}
+        <motion.header className="text-center" variants={fadeUp}>
+          <h2 className="text-[30px] sm:text-[34px] md:text-[38px] font-semibold text-[#10410f] tracking-tight">
             AMENITIES AT 27 PALAZZO
           </h2>
-        </header>
+        </motion.header>
 
         {/* Tabs */}
-        <div className="mt-8 flex justify-center gap-4">
+        <motion.div
+          className="mt-10 flex flex-wrap justify-center gap-4"
+          variants={fadeUp}
+        >
           <TabButton active={tab === "floorPlans"} onClick={() => setTab("floorPlans")}>
             FLOOR PLANS
           </TabButton>
@@ -67,53 +119,65 @@ export default function AmenitiesCarousel() {
           <TabButton active={tab === "elevation"} onClick={() => setTab("elevation")}>
             ELEVATION
           </TabButton>
-        </div>
+        </motion.div>
 
         {/* Carousel */}
-        <div className="relative mt-10">
+        <motion.div
+          className="relative mt-12 lg:mt-16"
+          variants={fadeUp}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          {/* Nav Buttons */}
           <button
             aria-label="Previous"
             onClick={() => scrollByCards(-1)}
             className={cn(
-              "absolute left-0 top-1/2 -translate-y-1/2 z-10 px-3 py-4 rounded-md shadow",
-              "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
-              "hover:opacity-90 focus:ring-2 focus:ring-amber-400"
+              "absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-10",
+              "h-11 w-11 rounded-[10px] text-black text-2xl leading-none",
+              "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+              "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+              "flex items-center justify-center"
             )}
           >
             ‹
           </button>
+
           <button
             aria-label="Next"
             onClick={() => scrollByCards(1)}
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 z-10 px-3 py-4 rounded-md shadow",
-              "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
-              "hover:opacity-90 focus:ring-2 focus:ring-amber-400"
+              "absolute -right-3 sm:-right-4 top-1/2 -translate-y-1/2 z-10",
+              "h-11 w-11 rounded-[10px] text-black text-2xl leading-none",
+              "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+              "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+              "flex items-center justify-center"
             )}
           >
             ›
           </button>
 
+          {/* Card Scroller */}
           <div
             ref={scrollerRef}
             className={cn(
-              "grid grid-flow-col auto-cols-[85%] gap-6 md:auto-cols-[calc((100%-2rem)/3)]",
-              "overflow-x-auto scroll-smooth snap-x snap-mandatory px-10 pb-2",
-              "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              "grid grid-flow-col gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2",
+              "px-6 sm:px-10",
+              "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+              "auto-cols-[85%] sm:auto-cols-[50%] lg:auto-cols-[calc((100%-64px)/3)]"
             )}
           >
             {items.map((item) => (
               <Card key={item.id} title={item.title} image={item.image} />
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
 
 /* ---------------- Tab Button ---------------- */
-
 function TabButton({
   active,
   onClick,
@@ -128,11 +192,11 @@ function TabButton({
       onClick={onClick}
       variant="secondary"
       className={cn(
-        "min-w-40 px-6 py-3 font-semibold tracking-wide text-sm rounded-md transition-all duration-200",
-        "bg-neutral-500 text-white",
+        "min-w-[150px] px-6 py-3 font-semibold tracking-wide text-sm rounded-md transition-all duration-300",
+        "bg-neutral-500 text-white ring-1 ring-black/10",
         "hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009] hover:text-white",
         active &&
-          "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.02]"
+          "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.03]"
       )}
     >
       {children}
@@ -140,29 +204,54 @@ function TabButton({
   );
 }
 
-/* ---------------- Card Component ---------------- */
-
+/* ---------------- Card ---------------- */
 function Card({ title, image }: { title: string; image: string }) {
   return (
-    <div
+    <motion.article
       data-card="true"
-      className="snap-start rounded-2xl bg-white ring-1 ring-amber-400/70 shadow-[0_10px_30px_rgba(0,0,0,0.08)] p-4"
+      className="
+        snap-start w-full max-w-[440px] mx-auto
+        rounded-[18px] bg-white p-[14px]
+        shadow-[0_10px_28px_rgba(0,0,0,0.10)]
+        transition-transform duration-300 hover:scale-[1.01]
+      "
+      whileHover={{ y: -4 }}
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          sizes="(min-width: 1024px) 30vw, 85vw"
-          className="object-cover"
-          priority
-        />
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-          <div className="rounded-md px-4 py-2 text-sm font-bold text-black shadow-md bg-gradient-to-b from-[#F0B12B] to-[#B47009]">
-            {title}
+      <div
+        className="
+          rounded-[14px] p-[2px]
+          bg-[linear-gradient(180deg,#f6d36a_0%,#e5b642_45%,#b67410_100%)]
+        "
+      >
+        <div className="rounded-[12px] bg-white overflow-hidden ring-1 ring-[#e7e7e7]">
+          <div className="relative aspect-[4/5] w-full">
+            <Image
+              src={image}
+              alt={title}
+              fill
+              sizes='(min-width: 1024px) 30vw, 85vw'
+              className="object-cover"
+              priority
+            />
+          </div>
+
+          <div className="px-4 pb-5 pt-4">
+            <div
+              className="
+                w-full max-w-[88%] mx-auto
+                rounded-[10px]
+                text-center text-[15px] font-extrabold text-black
+                px-4 py-2
+                shadow-[0_6px_18px_rgba(0,0,0,0.15)]
+                border-[3px] border-[#9e6a07]
+                bg-[linear-gradient(180deg,#f0b12b_0%,#b47009_100%)]
+              "
+            >
+              {title}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 }
