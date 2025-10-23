@@ -30,7 +30,7 @@ export default function LocationSection({
 }: Props) {
   const reduce = useReducedMotion();
 
-  const fadeUp: Variants ={
+  const fadeUp: Variants = {
     hidden: { opacity: 0, y: reduce ? 0 : 24 },
     show: {
       opacity: 1,
@@ -57,8 +57,17 @@ export default function LocationSection({
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.25 }}
-        className="mx-auto max-w-6xl px-6 py-16 flex flex-col lg:flex-row items-center justify-between gap-10"
+        className="
+    mx-auto 
+    max-w-[1450px]      /* ✅ Fixed width to 1450px */
+    px-0                /* Optional: remove side padding if full width is desired */
+    py-16 
+    flex flex-col lg:flex-row 
+    items-center justify-between 
+    gap-10
+  "
       >
+
         {/* Left content */}
         <motion.div
           variants={fadeUp}
