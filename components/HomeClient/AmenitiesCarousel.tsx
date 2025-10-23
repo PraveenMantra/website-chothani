@@ -135,10 +135,10 @@ export default function AmenitiesCarousel() {
             onClick={() => scrollByCards(-1)}
             className={cn(
               "absolute -left-3 sm:-left-16 top-1/2 -translate-y-1/2 z-10",
-              "h-11 w-11 rounded-[4px] text-black text-2xl leading-none",
+              "h-11 w-11 rounded-[4px] text-white text-2xl leading-none",
               "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
               "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-              "flex items-center justify-center"
+              "flex items-center justify-center cursor-pointer"
             )}
           >
             ‹
@@ -148,10 +148,10 @@ export default function AmenitiesCarousel() {
             onClick={() => scrollByCards(1)}
             className={cn(
               "absolute -right-3 sm:-right-16 top-1/2 -translate-y-1/2 z-10",
-              "h-11 w-11 rounded-[4px] text-black text-2xl leading-none",
+              "h-11 w-11 rounded-[4px] text-white text-2xl leading-none",
               "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
               "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-              "flex items-center justify-center"
+              "flex items-center justify-center cursor-pointer"
             )}
           >
             ›
@@ -202,7 +202,7 @@ function TabButton({
       className={cn(
         "min-w-[150px] px-6 py-3 font-semibold tracking-wide text-sm rounded-[8px] transition-all duration-300",
         "bg-neutral-500 text-white ring-1 ring-black/10",
-        "hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009] hover:text-white",
+        "hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009] hover:text-white cursor-pointer",
         active &&
         "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.03]"
       )}
@@ -220,46 +220,53 @@ function Card({ title, image }: { title: string; image: string }) {
       className="
         snap-start w-full mx-auto
         max-w-[440px] lg:max-w-none
-        h-[492px]                           
+        h-[492px]
         rounded-[18px] bg-white p-[14px]
         shadow-[0_10px_28px_rgba(0,0,0,0.10)]
-       
         border-[1px] border-[#a18050]
+        group
       "
-      whileHover={{ y: -4 }}
     >
       <div
         className="
-          rounded-[14px] p-[2px] h-full     
-          bg-[linear-gradient(180deg,#f6d36a_0%,#e5b642_45%,#b67410_100%)] 
+          rounded-[14px] p-[2px] h-full
+          bg-[linear-gradient(180deg,#f6d36a_0%,#e5b642_45%,#b67410_100%)]
         "
       >
-        <div className="rounded-[12px] bg-white overflow-hidden ring-1 ring-[#e7e7e7] h-full flex flex-col border-0 outline-0 ">
-          {/* Image area grows to fill remaining space */}
-          <div className="relative w-full flex-1 border-0 outline-0 ">
+        {/* Inner white container */}
+        <div className="rounded-[12px] bg-white overflow-hidden h-full flex flex-col">
+          {/* ✅ Image area — no border, no outline, no ring */}
+          <div className="relative w-full flex-1 overflow-hidden">
             <Image
               src={image}
               alt={title}
               fill
               sizes="(min-width: 1024px) 33vw, 85vw"
-              className="object-cover  transition-transform duration-300 hover:scale-[1.01]"
+              className="
+                object-cover
+                transition-transform duration-700 ease-out
+                group-hover:scale-105
+              "
               priority
             />
-          </div>
 
-          {/* Caption */}
-          <div className="px-4 pb-5 pt-4">
-            <div
-              className="
-                w-full max-w-[88%] mx-auto
-                rounded-[10px]
-                text-center text-[15px] font-extrabold text-black
-                px-4 py-2
-                shadow-[0_6px_18px_rgba(0,0,0,0.15)]
-                bg-[linear-gradient(180deg,#f0b12b_0%,#b47009_100%)]
-              "
-            >
-              {title}
+            {/* Title overlay pinned at bottom of image */}
+            <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
+              <div
+                className="
+                  w-full max-w-[88%]
+                  rounded-[10px]
+                  text-center text-[18px] font-bold text-black
+                  px-4 py-2
+                  shadow-[0_6px_18px_rgba(0,0,0,0.15)] cursor-pointer
+                "
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(232,129,4,1) 0%, rgba(244,209,112,1) 50%, rgba(232,129,4,1) 100%)",
+                }}
+              >
+                {title}
+              </div>
             </div>
           </div>
         </div>
@@ -267,4 +274,6 @@ function Card({ title, image }: { title: string; image: string }) {
     </motion.article>
   );
 }
+
+
 
