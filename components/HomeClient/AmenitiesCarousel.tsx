@@ -91,97 +91,103 @@ export default function AmenitiesCarousel() {
 
   return (
     <section id="amenities" className="bg-white relative overflow-hidden">
-      <motion.div
-        // target container width 1400px so 3-up at desktop fits perfectly
-        className="mx-auto max-w-[1400px] px-0 py-16 lg:py-20"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
-        variants={staggerContainer}
-      >
-        {/* Heading */}
-        <motion.header className="text-center" variants={fadeUp}>
-          <h2 className="text-[30px] sm:text-[34px] md:text-[38px] font-semibold text-[#10410f] tracking-tight">
-            AMENITIES AT 27 PALAZZO
-          </h2>
-        </motion.header>
-
-        {/* Tabs */}
+      {/* container: fluid on mobile, capped at 1542px */}
+      <div className="mx-auto w-full max-w-[1542px] px-3 sm:px-4">
         <motion.div
-          className="mt-10 flex flex-wrap justify-center gap-4"
-          variants={fadeUp}
+          className="mx-auto w-full max-w-[1400px] px-0 py-12 sm:py-16 lg:py-20"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.25 }}
+          variants={staggerContainer}
         >
-          <TabButton active={tab === "floorPlans"} onClick={() => setTab("floorPlans")}>
-            FLOOR PLANS
-          </TabButton>
-          <TabButton active={tab === "amenities"} onClick={() => setTab("amenities")}>
-            AMENITIES
-          </TabButton>
-          <TabButton active={tab === "elevation"} onClick={() => setTab("elevation")}>
-            ELEVATION
-          </TabButton>
-        </motion.div>
+          {/* Heading */}
+          <motion.header className="text-center" variants={fadeUp}>
+            <h2 className="font-semibold text-[#10410f] tracking-tight"
+              style={{ fontSize: "clamp(22px, 3.2vw, 38px)" }}>
+              AMENITIES AT 27 PALAZZO
+            </h2>
+          </motion.header>
 
-        {/* Carousel */}
-        <motion.div
-          className="relative mt-12 lg:mt-16"
-          variants={fadeUp}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          {/* Nav Buttons unchanged (positions tweaked a hair) */}
-          <button
-            aria-label="Previous"
-            onClick={() => scrollByCards(-1)}
-            className={cn(
-              "absolute -left-3 sm:-left-16 top-1/2 -translate-y-1/2 z-10",
-              "h-11 w-11 rounded-[4px] text-white text-2xl leading-none",
-              "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
-              "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-              "flex items-center justify-center cursor-pointer"
-            )}
+          {/* Tabs */}
+          <motion.div
+            className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4"
+            variants={fadeUp}
           >
-            ‹
-          </button>
-          <button
-            aria-label="Next"
-            onClick={() => scrollByCards(1)}
-            className={cn(
-              "absolute -right-3 sm:-right-16 top-1/2 -translate-y-1/2 z-10",
-              "h-11 w-11 rounded-[4px] text-white text-2xl leading-none",
-              "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
-              "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-              "flex items-center justify-center cursor-pointer"
-            )}
-          >
-            ›
-          </button>
+            <TabButton active={tab === "floorPlans"} onClick={() => setTab("floorPlans")}>
+              FLOOR PLANS
+            </TabButton>
+            <TabButton active={tab === "amenities"} onClick={() => setTab("amenities")}>
+              AMENITIES
+            </TabButton>
+            <TabButton active={tab === "elevation"} onClick={() => setTab("elevation")}>
+              ELEVATION
+            </TabButton>
+          </motion.div>
 
-          {/* VIEWPORT: clamps peeking */}
-          <div className="overflow-hidden">
-            {/* SCROLLER */}
-            <div
-              ref={scrollerRef}
+          {/* Carousel */}
+          <motion.div
+            className="relative mt-8 sm:mt-12 lg:mt-16"
+            variants={fadeUp}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
+          >
+            {/* Nav buttons – smaller on phones, pulled outward on large screens */}
+            <button
+              aria-label="Previous"
+              onClick={() => scrollByCards(-1)}
               className={cn(
-                "grid grid-flow-col gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2",
-                // no inner padding so the 3-col calc is exact
-                "px-0",
-                // hide scrollbar
-                "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
-                // three columns at lg: card width = (100% - 2*gaps) / 3
-                "auto-cols-[85%] sm:auto-cols-[60%] lg:auto-cols-[calc((100%-64px)/3)]"
+                "absolute left-2 sm:left-1 top-1/2 -translate-y-1/2 z-10 md:-left-6 lg:-left-16",
+                "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
+                "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+                "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+                "flex items-center justify-center"
               )}
-              // keep snaps clean
-              style={{ scrollPaddingInline: "0px" }}
             >
-              {items.map((item) => (
-                <Card key={item.id} title={item.title} image={item.image} />
-              ))}
+              ‹
+            </button>
+            <button
+              aria-label="Next"
+              onClick={() => scrollByCards(1)}
+              className={cn(
+                "absolute right-2 sm:right-1 top-1/2 -translate-y-1/2 z-10 md:-right-6 lg:-right-16",
+                "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
+                "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+                "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+                "flex items-center justify-center"
+              )}
+            >
+              ›
+            </button>
+
+            {/* Viewport */}
+            <div className="overflow-hidden">
+              {/* Scroller */}
+              <div
+                ref={scrollerRef}
+                className={cn(
+                  "grid grid-flow-col overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2",
+                  // hide scrollbar
+                  "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+                  // responsive gaps
+                  "gap-4 sm:gap-6 lg:gap-8",
+                  // responsive column widths:
+                  // phones ≈ 90% (1-up), small tablets 70–75% (peek), md ~55% (2-up peek), lg = exact 3-up
+                  "auto-cols-[90%] xs:auto-cols-[85%] sm:auto-cols-[72%] md:auto-cols-[55%] lg:auto-cols-[calc((100%-64px)/3)]"
+                )}
+                style={{ scrollPaddingInline: "0px" }}
+              >
+                {items.map((item) => (
+                  <Card key={item.id} title={item.title} image={item.image} />
+                ))}
+              </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
+
   );
 }
 

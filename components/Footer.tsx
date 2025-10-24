@@ -143,7 +143,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-3 mb-6">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image src="/Images/mail.png" alt="Mail" width={32} height={32} className="object-contain w-full h-full" />
+                  <Image src="/Images/sms.png" alt="Mail" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
                 <a href="mailto:contactus@avighnaspaces.com" className="hover:underline">
                   contactus@avighnaspaces.com
@@ -167,7 +167,7 @@ export default function Footer() {
               <h3 className="text-white font-semibold text-2xl mb-6">Address</h3>
               <div className="flex items-start gap-3">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image src="/Images/address.png" alt="Map Pin" width={32} height={32} className="object-contain w-full h-full" />
+                  <Image src="/Images/addressloc.png" alt="Map Pin" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
                 <p className="text-white/90 leading-relaxed">
                   Office No 204, 2nd Floor, Ujagar Chamber, Near Deonar Bus Depot, Deonar, Mumbai - 88
