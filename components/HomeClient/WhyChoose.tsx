@@ -60,7 +60,7 @@ export default function WhyChoose() {
           />
 
           {/* Center badge */}
-          <BubblePos className="left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2">
+          <BubblePos className="left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2">
             <MainCircle />
           </BubblePos>
 
@@ -75,12 +75,12 @@ export default function WhyChoose() {
           </BubblePos>
 
           {/* ML bubble */}
-          <BubblePos className="left-[27%] top-[50%]">
+          <BubblePos className="left-[26%] top-[55%]">
             <BubbleCard {...FEATURES[4]} />
           </BubblePos>
 
           {/* MR bubble */}
-          <BubblePos className="right-[27%] top-[50%]">
+          <BubblePos className="right-[26%] top-[55%]">
             <BubbleCard {...FEATURES[2]} />
           </BubblePos>
 
@@ -100,18 +100,19 @@ export default function WhyChoose() {
           >
             <a
               href="#contact-us"
-              className="inline-block rounded-xl px-8 py-3 font-semibold text-black
-               shadow-[0_12px_28px_rgba(0,0,0,0.18)]
-               border border-[#D8A018]/50 transition
-               hover:scale-[1.02] active:scale-95"
+              className="inline-block rounded-[6px] px-8 py-3 font-semibold text-white
+      shadow-[0_12px_28px_rgba(0,0,0,0.18)]
+      border border-[#f6d789] transition
+      hover:scale-[1.02] active:scale-95"
               style={{
                 background:
-                  "linear-gradient(90deg, rgba(114,71,8,1) 0%, rgba(182,122,26,1) 50%, rgba(120,67,5,1) 100%)",
+                  "linear-gradient(180deg, rgba(247, 207, 75, 1) 0%, rgba(186, 115, 2, 1) 100%)",
               }}
             >
               KNOW MORE
             </a>
           </motion.div>
+
         </div>
 
         {/* ---- Mobile version (stacked) ---- */}
@@ -180,19 +181,70 @@ function MainCircle() {
       className="relative grid place-items-center"
       aria-label="Why choose 27 Palazzo"
     >
-      <div className="rounded-full p-[clamp(10px,1.2vw,16px)] bg-[linear-gradient(180deg,#f0b12b_0%,#f6da76_55%,#e9a519_100%)] shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
+      {/* Outer gold gradient ring */}
+      <div className="rounded-full p-[clamp(10px,1.2vw,16px)] bg-[linear-gradient(180deg,#D29A06_0%,#FEE792_35%,#BC7100_65%,#EFB000_100%)] shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
+
+        {/* Inner white circle */}
         <div className="relative grid h-[270px] w-[270px] place-items-center rounded-full bg-white sm:h-[240px] sm:w-[240px] md:h-[270px] md:w-[270px]">
+          {/* subtle inset shadow */}
           <div className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_8px_20px_rgba(0,0,0,0.06)]" />
-          <div className="px-6 text-center">
-            <div className="text-[clamp(16px,1.2vw,20px)] font-semibold tracking-wide text-[#2F2F2F]">
-              WHY CHOOSE
-            </div>
-            <div className="mt-1 leading-none text-[clamp(44px,5vw,60px)] font-extrabold text-[#0E3C14]">
+
+          {/* Center text */}
+          <div className="text-center flex flex-col items-center justify-center leading-tight">
+            {/* WHY */}
+            <span
+              className="
+                block
+                font-semibold
+                text-[clamp(22px,4vw,32px)]
+                bg-[linear-gradient(180deg,rgba(22,77,6,1)0%,rgba(2,42,5,1)100%)]
+                bg-clip-text text-transparent
+              "
+            >
+              WHY
+            </span>
+
+            {/* CHOOSE */}
+            <span
+              className="
+                block
+                font-semibold
+                text-[clamp(22px,4vw,32px)]
+                bg-[linear-gradient(180deg,rgba(22,77,6,1)0%,rgba(2,42,5,1)100%)]
+                bg-clip-text text-transparent
+              "
+            >
+              CHOOSE
+            </span>
+
+            {/* 27 */}
+            <span
+              className="
+                block
+                font-extrabold
+                mt-[4px]
+                text-[clamp(40px,7vw,60px)]
+                leading-none
+                bg-[linear-gradient(180deg,rgba(22,77,6,1)0%,rgba(2,42,5,1)100%)]
+                bg-clip-text text-transparent
+              "
+            >
               27
-            </div>
-            <div className="mt-1 text-[clamp(16px,1.2vw,20px)] font-semibold tracking-wide text-[#2F2F2F]">
+            </span>
+
+            {/* PALAZZO? */}
+            <span
+              className="
+                block
+                mt-[2px]
+                font-semibold
+                text-[clamp(22px,4vw,32px)]
+                bg-[linear-gradient(180deg,rgba(22,77,6,1)0%,rgba(2,42,5,1)100%)]
+                bg-clip-text text-transparent
+              "
+            >
               PALAZZO?
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -200,35 +252,115 @@ function MainCircle() {
   );
 }
 
+
+
 /* ---------- Bubble Card ---------- */
+// function BubbleCard({ title, icon }: Feature) {
+//   return (
+//     <motion.div
+//       whileHover={{ scale: 1.03, y: -3 }}
+//       transition={{ type: "spring", stiffness: 360, damping: 22 }}
+//       className="relative grid place-items-center rounded-full"
+//       style={{
+//         width: "clamp(150px,13vw,200px)",
+//         height: "clamp(150px,13vw,200px)",
+//       }}
+//     >
+//       <div className="absolute -z-10 w-full h-full rounded-full bg-black/5 blur-[2px]" />
+//       <div className="relative grid place-items-center w-[92%] h-[92%] rounded-full bg-white shadow-[0_18px_45px_rgba(0,0,0,0.14),inset_0_1px_0_rgba(255,255,255,0.7)]">
+//         <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-black/5" />
+//         <div className="mb-2 grid place-items-center">
+//           <Image
+//             src={icon}
+//             alt=""
+//             width={60}
+//             height={60}
+//             className="object-contain w-[clamp(40px,4vw,70px)] h-auto opacity-95"
+//           />
+//         </div>
+//         <p className="text-center leading-5 text-[#3A3A3A] text-[12px] font-semibold -mt-10 mx-auto px-2"
+//           style={{
+//             maxWidth: "120px",
+//             wordWrap: "break-word",
+//             overflowWrap: "break-word",
+//           }}
+//         >
+//           {title}
+//         </p>
+//       </div>
+//     </motion.div>
+//   );
+// }
+
 function BubbleCard({ title, icon }: Feature) {
+  // Bold the first word (e.g., "RERA") like the reference
+  const [first, ...rest] = title.split(" ");
+  const restText = rest.join(" ");
+
   return (
     <motion.div
       whileHover={{ scale: 1.03, y: -3 }}
       transition={{ type: "spring", stiffness: 360, damping: 22 }}
-      className="relative grid place-items-center rounded-full"
+      className="relative grid place-items-center"
       style={{
         width: "clamp(150px,13vw,200px)",
         height: "clamp(150px,13vw,200px)",
       }}
     >
-      <div className="absolute -z-10 w-full h-full rounded-full bg-black/5 blur-[2px]" />
-      <div className="relative grid place-items-center w-[92%] h-[92%] rounded-full bg-white shadow-[0_18px_45px_rgba(0,0,0,0.14),inset_0_1px_0_rgba(255,255,255,0.7)]">
-        <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-black/5" />
-        <div className="mb-2 grid place-items-center">
-          <Image
-            src={icon}
-            alt=""
-            width={60}
-            height={60}
-            className="object-contain w-[clamp(40px,4vw,70px)] h-auto opacity-95"
-          />
+      {/* Ground shadow (soft oval below) */}
+      {/* <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-2 w-12 rounded-full bg-black/15 blur-[2px]" /> */}
+
+      {/* ===== Shell (rim) with drop shadow ===== */}
+      <div
+        className="
+          relative grid place-items-center w-full h-full rounded-full
+          shadow-[0_18px_34px_rgba(0,0,0,0.22),0_6px_14px_rgba(0,0,0,0.14)]
+          bg-[radial-gradient(120%_120%_at_50%_0%,#ffffff_0%,#edeff3_50%,#d6d8dd_100%)]
+        "
+      >
+        {/* ===== Inner plate (white) with top inset highlight + bottom inner shadow ===== */}
+        <div
+          className="
+            relative grid place-items-center rounded-full w-[92%] h-[92%]
+            bg-[linear-gradient(180deg,#e9ebef_0%,#ffffff_45%,#ffffff_100%)]
+            shadow-[inset_0_10px_18px_rgba(0,0,0,0.06),inset_0_-10px_14px_rgba(0,0,0,0.10)]
+          "
+        >
+          {/* subtle edge ring for crispness */}
+          <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-black/5" />
+
+          {/* ICON */}
+          <div className="mt-4 grid place-items-center">
+            <Image
+              src={icon}
+              alt=""
+              width={60}
+              height={60}
+              className="object-contain w-[clamp(42px,4.2vw,60px)] h-auto"
+            />
+          </div>
+
+          {/* CAPTION (120px max width, pulled up toward icon) */}
+          <p
+            className="
+              mx-auto text-center leading-[1.15]
+              text-[12px] text-black
+              -mt-3 px-2
+            "
+            style={{
+              maxWidth: "120px",
+              wordWrap: "break-word",
+              overflowWrap: "break-word",
+              fontWeight: 600,
+            }}
+          >
+            <span className="font-[600]">{first}</span>
+            {restText ? " " : ""}
+            <span className="font-[600]">{restText}</span>
+          </p>
         </div>
-        <p className="px-4 text-center text-[clamp(11px,1vw,13px)] leading-5 text-[#3A3A3A]">
-          {title}
-        </p>
       </div>
-      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-2 w-12 rounded-full bg-black/10 blur-[2px]" />
     </motion.div>
   );
 }
+
