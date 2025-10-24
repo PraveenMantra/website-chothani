@@ -26,50 +26,85 @@ export default function Hero() {
       <div className="relative hero">
         {/* ===== Top: CTA Card ===== */}
         <motion.div
-          className="relative z-20 max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24"
+          className="relative z-20 max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8"
           variants={stagger}
           initial="hidden"
           animate="show"
+          style={{
+            paddingTop: "calc(var(--spacing) * 82)",
+          }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 items-start">
             {/* LEFT: CTA CARD */}
             <motion.div className="lg:col-span-5" variants={fadeUp}>
-              <div className="w-full max-w-[460px] bg-[#0E3C14]/90 text-white rounded-2xl p-6 shadow-2xl backdrop-blur-[2px]">
+              <div
+                className="
+    w-full max-w-[460px]
+    text-white rounded-2xl p-6 shadow-2xl backdrop-blur-[2px]
+  "
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(24,80,6,1) 0%, rgba(3,50,9,1) 50%, rgba(29,85,7,1) 100%)",
+                }}
+              >
                 {/* Heading */}
-                <div className="flex items-end gap-2">
-                  <span className="text-[64px] leading-none font-extrabold text-[#F6DA76] drop-shadow-md">
-                    27
-                  </span>
-                  <div className="-mb-1">
-                    <div className="text-[34px] font-extrabold tracking-wide">PALAZZO</div>
-                    <div className="text-[14px] uppercase text-[#F0F0F0]">
+                <div className="flex flex-col items-start gap-2">
+                  <Image
+                    src="/Images/27Pallazzo.png"
+                    alt="27 PALAZZO"
+                    width={340}
+                    height={90}
+                    priority
+                    className="h-auto w-[260px] sm:w-[300px] lg:w-[340px] object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]"
+                  />
+
+                  {/* Subtitle Below the Image */}
+                  <div className="mt-1">
+                    <div className="text-[14px] sm:text-[16px] uppercase text-[#F0F0F0] font-medium tracking-wide">
                       Luxury 3 BHK Residences in Chembur
                     </div>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="mt-4 text-[13px] bg-white/10 rounded-md p-3 leading-relaxed">
-                  1500 sq. ft. carpet area apartments starting from ₹6 Cr++ with basic
-                  fittings. A premium address for those who aspire more.
+                <p
+                  className="
+    mt-4 text-[13px] leading-relaxed font-medium text-black
+    rounded-md p-3
+    shadow-[inset_0_1px_3px_rgba(255,255,255,0.4),0_4px_10px_rgba(0,0,0,0.15)]
+  "
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(254,182,40,1) 0%, rgba(255,231,143,1) 50%, rgba(255,183,14,1) 100%)",
+                  }}
+                >
+                  1500 sq. ft. carpet area apartments starting from ₹6 Cr++ with basic fittings.
+                  A premium address for those who aspire more.
                 </p>
 
-                {/* CTA Button */}
+              </div>
+
+              {/* ✅ Button placed OUTSIDE the green card but aligned below it */}
+              <div className="mt-5">
                 <Link
                   href="#contact-us"
-                  className="mt-5 inline-block rounded-lg px-5 py-3 font-semibold text-black
-                             bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519]
-                             shadow-[0_6px_20px_rgba(233,165,25,0.35)] hover:scale-[1.02] transition"
+                  className="inline-block rounded-lg px-6 py-3 font-semibold text-white
+                     bg-gradient-to-b from-[#f3cb47] via-[#d9a026] to-[#bb7202]
+                     border border-[#f6d789]
+                     shadow-[0_6px_20px_rgba(233,165,25,0.35)]
+                     hover:scale-[1.02] active:scale-95 transition"
                 >
                   BOOK A SITE VISIT TODAY
                 </Link>
               </div>
             </motion.div>
 
-            {/* right spacer to preserve composition */}
+            {/* right spacer to preserve layout */}
             <div className="hidden lg:block lg:col-span-7" />
           </div>
         </motion.div>
+
+
 
         {/* ===== Bottom: Project Overview ===== */}
         {/* mt / pt scaled by viewport so it sits lower like the screenshot */}
