@@ -50,7 +50,11 @@ export default function LocationSection({
 
   return (
     <section id="location"
-      className="relative border-b border-black/10 bg-cover bg-center"
+      className="
+    relative border-b border-black/10 
+    bg-cover bg-center 
+    px-4 sm:px-6 lg:px-8   
+  "
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <motion.div
@@ -58,14 +62,13 @@ export default function LocationSection({
         whileInView="show"
         viewport={{ once: true, amount: 0.25 }}
         className="
-    mx-auto 
-    max-w-[1450px]      /* ✅ Fixed width to 1450px */
-    px-0                /* Optional: remove side padding if full width is desired */
-    py-16 
-    flex flex-col lg:flex-row 
-    items-center justify-between 
-    gap-10
-  "
+      mx-auto 
+      max-w-[1450px] 
+      py-12 sm:py-16 lg:py-20  
+      flex flex-col lg:flex-row 
+      items-center justify-between 
+      gap-10
+    "
       >
 
         {/* Left content */}

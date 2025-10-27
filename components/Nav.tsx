@@ -23,6 +23,7 @@ export default function Nav() {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   // ----- SCROLL-SPY STATE -----
   const [activeHash, setActiveHash] = useState<string>("#home");
@@ -117,6 +118,16 @@ export default function Nav() {
 
   const isActive = (href: string) => pathname === "/" && activeHash === href;
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / total) * 100;
+      setScrollProgress(progress);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header
       className="fixed top-0 left-0 w-full z-50 bg-[#0E3C14] border-b border-[#DEDFDF] backdrop-blur"
@@ -144,7 +155,10 @@ export default function Nav() {
                     hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519] hover:text-black
                   `}
                 >
-                  {item.name}
+                  <span className="relative group">
+                    {item.name}
+                    <span className="absolute left-0 -bottom-[4px] w-0 h-[2px] bg-gradient-to-r from-[#E9A519] via-[#F6DA76] to-[#E9A519] transition-all duration-300 group-hover:w-full" />
+                  </span>
                 </Link>
               </li>
             ))}
@@ -192,8 +206,9 @@ export default function Nav() {
 
         {/* Drawer */}
         <aside
-          className={`fixed top-0 left-0 h-full w-[280px] bg-[#B7A887] z-50 border-r-4 border-white transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+          className={`fixed top-0 left-0 h-full w-[280px] bg-[#B7A887] z-50 border-r-4 border-white 
+transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform 
+${isOpen ? "translate-x-0 opacity-100 scale-100" : "-translate-x-full opacity-50 scale-[0.96]"}`}
         >
           <div className="flex items-center justify-between p-4">
             <Link href="/" onClick={() => setIsOpen(false)}>
@@ -218,7 +233,11 @@ export default function Nav() {
                       }`}
                     style={{ transitionDelay: `${i * 40}ms` }}
                   >
-                    {item.name}
+                    <span className="relative group">
+                      {item.name}
+                      <span className="absolute left-0 -bottom-[4px] w-0 h-[2px] bg-gradient-to-r from-[#E9A519] via-[#F6DA76] to-[#E9A519] transition-all duration-300 group-hover:w-full" style={{ width: `${scrollProgress}%` }} />
+
+                    </span>
                   </Link>
                 </li>
               ))}

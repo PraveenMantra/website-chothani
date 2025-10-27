@@ -22,26 +22,23 @@ const stagger: Variants = {
 
 export default function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden">
+    <section className="relative overflow-hidden">
       <div className="relative hero">
         {/* ===== Top: CTA Card ===== */}
         <motion.div
-          className="relative z-20 max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8"
+          className="relative z-20 max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8 hero-top-section"
           variants={stagger}
           initial="hidden"
           animate="show"
           style={{
             paddingTop: "calc(var(--spacing) * 82)",
           }}
+          id="home"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 items-start">
             {/* LEFT: CTA CARD */}
             <motion.div className="lg:col-span-5" variants={fadeUp}>
-              <div
-                className="
-    w-full max-w-[460px]
-    text-white rounded-2xl p-6 shadow-2xl backdrop-blur-[2px]
-  "
+              <div className="w-full max-w-[460px] text-white rounded-2xl p-6 shadow-2xl backdrop-blur-[2px] mb-[35px] md:mb-0"
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(24,80,6,1) 0%, rgba(3,50,9,1) 50%, rgba(29,85,7,1) 100%)",
@@ -85,18 +82,19 @@ export default function Hero() {
               </div>
 
               {/* ✅ Button placed OUTSIDE the green card but aligned below it */}
-              <div className="mt-5">
+              <div className="mt-5 mb-[35px] md:mb-0 flex justify-center md:justify-start">
                 <Link
                   href="#contact-us"
                   className="inline-block rounded-lg px-6 py-3 font-semibold text-white
-                     bg-gradient-to-b from-[#f3cb47] via-[#d9a026] to-[#bb7202]
-                     border border-[#f6d789]
-                     shadow-[0_6px_20px_rgba(233,165,25,0.35)]
-                     hover:scale-[1.02] active:scale-95 transition"
+                  bg-gradient-to-b from-[#f3cb47] via-[#d9a026] to-[#bb7202]
+                  border border-[#f6d789]
+                  shadow-[0_6px_20px_rgba(233,165,25,0.35)]
+                  hover:scale-[1.02] active:scale-95 transition"
                 >
                   BOOK A SITE VISIT TODAY
                 </Link>
               </div>
+
             </motion.div>
 
             {/* right spacer to preserve layout */}
@@ -109,12 +107,8 @@ export default function Hero() {
         {/* ===== Bottom: Project Overview ===== */}
         {/* mt / pt scaled by viewport so it sits lower like the screenshot */}
         <motion.div
-          className="
-            max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8
-            mt-[220px] md:mt-[360px] lg:mt-[500px]
-            pt-[140px] md:pt-[220px] lg:pt-[300px]
-            pb-12 lg:pb-20
-          "
+          className="max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8 mt-[20px] sm:mt-[220px] md:mt-[360px] lg:mt-[500px] pt-[40px] sm:pt-[140px] md:pt-[220px] lg:pt-[300px] pb-12 lg:pb-20"
+          id="about-us"
           variants={stagger}
           initial="hidden"
           whileInView="show"
@@ -122,13 +116,13 @@ export default function Hero() {
         >
           <div className="flex flex-col lg:flex-row items-start gap-10">
             {/* LEFT: Image (≈38%) */}
-            <motion.div className="w-full lg:w-[38%] flex justify-center lg:justify-start" variants={fadeUp}>
-              <div className="relative w-full max-w-[460px]">
+            <motion.div className="w-full lg:w-[47%] flex justify-center lg:justify-start" variants={fadeUp}>
+              <div className="relative w-full max-w-[640px]">
                 <Image
                   src="/Images/project_overview.png"
                   alt="Project overview"
-                  width={460}
-                  height={320}
+                  width={640}
+                  height={490}
                   className="w-full h-auto"
                   priority
                 />
@@ -136,7 +130,7 @@ export default function Hero() {
             </motion.div>
 
             {/* RIGHT: Text (≈62%) */}
-            <motion.div className="w-full lg:w-[62%]" variants={fadeUp}>
+            <motion.div className="w-full lg:w-[50%]" variants={fadeUp}>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0E3C14]">
                 PROJECT OVERVIEW
               </h2>

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, Variants } from "framer-motion"; // 🎬 NEW
+import { motion, Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -48,8 +48,8 @@ const validateEnvVars = () => {
 
   if (missingVars.length > 0) {
     console.error("Missing environment variables:", missingVars);
-    toast.error("Configuration Error", {
-      description: "Missing environment configuration. Please contact support.",
+    toast.error("Configuration Error ⚠️", {
+      description: "Some environment variables are missing. Please contact support.",
     });
     return false;
   }
@@ -66,7 +66,7 @@ const formatEmailList = (emails?: string): string[] => {
 
 type FormValues = z.infer<typeof formSchema>;
 
-// 🎬 Motion Variants
+/* ---------- Animation Variants ---------- */
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
@@ -84,6 +84,7 @@ const fadeInRight: Variants = {
 
 export default function ContactUsSection() {
   const [loading, setLoading] = useState(false);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -119,15 +120,25 @@ export default function ContactUsSection() {
         body: JSON.stringify(contactData),
       });
 
-      if (!res.ok) throw new Error("Failed to send message");
+      const data = await res.json();
 
-      toast.success("Message Sent ✅", {
-        description: "Thank you for contacting us. We'll reach out soon!",
-      });
-      form.reset();
+      console.log("data===>>>", data);
+      
+
+      // ✅ Handle your API response structure
+      if (data?.status === "success" && data?.results?.status === "success") {
+        toast.success("Message Sent ✅", {
+          description: data?.results?.message || "Thank you for contacting us. We'll get back soon!",
+        });
+        form.reset();
+      } else {
+        throw new Error(data?.message || "Email send failed");
+      }
     } catch (error) {
       console.error(error);
-      toast.error("Unable to send message. Please try again later.");
+      toast.error("Unable to send message ❌", {
+        description: "Please check your internet or try again later.",
+      });
     } finally {
       setLoading(false);
     }
@@ -139,7 +150,7 @@ export default function ContactUsSection() {
       className="relative bg-cover bg-center border-b border-black/10 overflow-hidden"
       style={{ backgroundImage: "url(/Images/contactBG_new.webp)" }}
     >
-      <div className="mx-auto w-full max-w-[1450px] px-4 sm:px-4 lg:px-4 py-6 lg:py-8">
+      <div className="mx-auto w-full max-w-[1450px] px-4 sm:px-4 lg:px-4 py-8 lg:py-12">
         <motion.div
           className="flex flex-col lg:flex-row items-center justify-between gap-10"
           initial="hidden"
@@ -188,11 +199,13 @@ export default function ContactUsSection() {
                           <FormControl>
                             <Input
                               placeholder={
-                                fieldName === "configuration" ? "Message" : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+                                fieldName === "configuration"
+                                  ? "Message"
+                                  : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
                               }
                               type={fieldName === "email" ? "email" : "text"}
                               inputMode={fieldName === "mobile" ? "tel" : undefined}
-                              className="h-12 rounded-lg bg-white text-black shadow"
+                              className="h-12 rounded-lg bg-white text-black shadow focus:ring-2 focus:ring-[#F0B12B] transition-all"
                               {...field}
                             />
                           </FormControl>
@@ -209,15 +222,15 @@ export default function ContactUsSection() {
                       type="submit"
                       disabled={loading}
                       className={cn(
-                        "px-8 py-6 text-base font-semibold rounded-md shadow-md transition-all duration-300",
+                        "cursor-pointer px-8 py-6 text-base font-semibold rounded-md shadow-md transition-all duration-300",
                         "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
-                        "hover:opacity-90 disabled:opacity-70"
+                        "hover:opacity-90 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
                       )}
                     >
                       {loading ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          SUBMITTING…
+                          Sending...
                         </span>
                       ) : (
                         "SUBMIT"

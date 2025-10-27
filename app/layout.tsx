@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "./scrollbar.css";
-import { CommentsProvider } from "@/context/CommentsContext";
-import CommentOverlay from "@/components/CommentsPluginComponents/CommentOverlay";
 import Nav from "@/components/Nav";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import ScrollActionButtons from "@/components/ScrollActionButtons";

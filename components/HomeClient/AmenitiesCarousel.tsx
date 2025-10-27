@@ -126,7 +126,7 @@ export default function AmenitiesCarousel() {
 
           {/* Carousel */}
           <motion.div
-            className="relative mt-8 sm:mt-12 lg:mt-16"
+            className="relative mt-8 sm:mt-12 lg:mt-16 lg:px-4 md:px-4"
             variants={fadeUp}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
