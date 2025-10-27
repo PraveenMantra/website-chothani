@@ -357,3 +357,23 @@ small {
   box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.15);
   pointer-events: none;
 } */
+
+
+/* --- ScrollToTop: subtle theme-aware glow --- */
+@keyframes scrolltop-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0px rgba(13,148,136,0.0), 0 0 0px rgba(45,212,191,0.0); }
+  50%      { box-shadow: 0 0 12px rgba(13,148,136,0.24), 0 0 24px rgba(45,212,191,0.18); }
+}
+@keyframes scrolltop-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+.scrolltop-glow {
+  animation: scrolltop-pulse-glow 2.4s ease-in-out infinite,
+             scrolltop-float 4.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scrolltop-glow {
+    animation: none;
+  }
+}

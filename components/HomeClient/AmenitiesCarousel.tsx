@@ -125,65 +125,71 @@ export default function AmenitiesCarousel() {
           </motion.div>
 
           {/* Carousel */}
+          {/* Carousel */}
           <motion.div
-            className="relative mt-8 sm:mt-12 lg:mt-16 lg:px-4 md:px-4"
+            className="relative mt-8 sm:mt-12 lg:mt-16"
             variants={fadeUp}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={() => setIsPaused(true)}
             onTouchEnd={() => setIsPaused(false)}
           >
-            {/* Nav buttons – smaller on phones, pulled outward on large screens */}
-            <button
-              aria-label="Previous"
-              onClick={() => scrollByCards(-1)}
-              className={cn(
-                "absolute left-2 sm:left-1 top-1/2 -translate-y-1/2 z-10 md:-left-6 lg:-left-16",
-                "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
-                "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
-                "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-                "flex items-center justify-center"
-              )}
-            >
-              ‹
-            </button>
-            <button
-              aria-label="Next"
-              onClick={() => scrollByCards(1)}
-              className={cn(
-                "absolute right-2 sm:right-1 top-1/2 -translate-y-1/2 z-10 md:-right-6 lg:-right-16",
-                "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
-                "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
-                "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-                "flex items-center justify-center"
-              )}
-            >
-              ›
-            </button>
-
-            {/* Viewport */}
-            <div className="overflow-hidden">
-              {/* Scroller */}
-              <div
-                ref={scrollerRef}
+            {/* Viewport frame: gives space for arrows to live inside safely */}
+            <div className="relative overflow-visible px-10 sm:px-12 lg:px-16">
+              {/* Nav buttons – always in frame, never clipped */}
+              <button
+                aria-label="Previous"
+                onClick={() => scrollByCards(-1)}
                 className={cn(
-                  "grid grid-flow-col overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2",
-                  // hide scrollbar
-                  "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
-                  // responsive gaps
-                  "gap-4 sm:gap-6 lg:gap-8",
-                  // responsive column widths:
-                  // phones ≈ 90% (1-up), small tablets 70–75% (peek), md ~55% (2-up peek), lg = exact 3-up
-                  "auto-cols-[90%] xs:auto-cols-[85%] sm:auto-cols-[72%] md:auto-cols-[55%] lg:auto-cols-[calc((100%-64px)/3)]"
+                  "absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-50",
+                  "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
+                  "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+                  "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+                  "flex items-center justify-center cursor-pointer"
                 )}
-                style={{ scrollPaddingInline: "0px" }}
               >
-                {items.map((item) => (
-                  <Card key={item.id} title={item.title} image={item.image} />
-                ))}
+                ‹
+              </button>
+              <button
+                aria-label="Next"
+                onClick={() => scrollByCards(1)}
+                className={cn(
+                  "absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-50",
+                  "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
+                  "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+                  "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+                  "flex items-center justify-center cursor-pointer"
+                )}
+              >
+                ›
+              </button>
+
+              {/* Viewport (clamps peeking) */}
+              <div className="overflow-hidden">
+                {/* Scroller */}
+                <div
+                  ref={scrollerRef}
+                  className={cn(
+                    "grid grid-flow-col overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2",
+                    // hide scrollbar
+                    "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+                    // responsive gaps
+                    "gap-4 sm:gap-6 xl:gap-8",
+                    // responsive column widths
+                    // phones ~90% (1-up), tablets ~70%, md ~55% (2-up peek),
+                    // lg/xl/2xl -> exact 3-up using consistent calc with 64px gap
+                    "auto-cols-[90%] xs:auto-cols-[85%] sm:auto-cols-[72%] md:auto-cols-[55%] lg:auto-cols-[calc((100%-64px)/3)] xl:auto-cols-[calc((100%-64px)/3)] 2xl:auto-cols-[calc((100%-64px)/3)]"
+                  )}
+                  style={{ scrollPaddingInline: "0px" }}
+                >
+                  {items.map((item) => (
+                    <Card key={item.id} title={item.title} image={item.image} />
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
+
         </motion.div>
       </div>
     </section>
