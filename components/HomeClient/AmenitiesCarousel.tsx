@@ -1,16 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import useEmblaCarousel from "embla-carousel-react";
 
 /* ------------------ Data ------------------ */
 type CardItem = { id: string; title: string; image: string };
 type TabKey = "floorPlans" | "amenities" | "elevation";
 
-const BUILDING_IMG = "/Images/building.png"; // replace with your actual image
+const BUILDING_IMG = "/Images/building.png";
 
 const DATA: Record<TabKey, CardItem[]> = {
   floorPlans: [
@@ -52,42 +53,59 @@ const staggerContainer: Variants = {
 /* ------------------ Component ------------------ */
 export default function AmenitiesCarousel() {
   const [tab, setTab] = useState<TabKey>("amenities");
-  const scrollerRef = useRef<HTMLDivElement>(null);
   const items = useMemo(() => DATA[tab], [tab]);
-  const [isPaused, setIsPaused] = useState(false);
 
-  const scrollByCards = (dir: -1 | 1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLDivElement>("[data-card='true']");
-    if (!card) return;
-    const gap = parseFloat(getComputedStyle(el).columnGap || "0");
-    const visible = Math.max(1, Math.round(el.clientWidth / (card.clientWidth + gap)));
-    const delta = dir * visible * (card.clientWidth + gap);
-    el.scrollBy({ left: delta, behavior: "smooth" });
-  };
+  // Embla setup (behavior cloned from your working project)
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: false,
+    dragFree: false,
+    skipSnaps: false,
+    duration: 25,
+  });
 
-  /* ------------------ Autoplay Scroll ------------------ */
+  const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
+  const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setPrevBtnEnabled(emblaApi.canScrollPrev());
+    setNextBtnEnabled(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
   useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-
-    let scrollAmount = 0.5; // subtle smooth movement
-    let frameId: number;
-
-    const scroll = () => {
-      if (!isPaused) {
-        el.scrollLeft += scrollAmount;
-        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 1) {
-          el.scrollTo({ left: 0, behavior: "smooth" });
-        }
-      }
-      frameId = requestAnimationFrame(scroll);
+    if (!emblaApi) return;
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off("select", onSelect);
     };
+  }, [emblaApi, onSelect]);
 
-    frameId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(frameId);
-  }, [isPaused, tab]);
+  // Re-init when tab items change
+  useEffect(() => {
+    emblaApi?.reInit();
+  }, [emblaApi, items.length, tab]);
+
+  // Autoplay (same pattern you used)
+  useEffect(() => {
+    if (!emblaApi || !isPlaying || items.length === 0) return;
+    const id = setInterval(() => {
+      if (emblaApi.canScrollNext()) emblaApi.scrollNext();
+      else emblaApi.scrollTo(0);
+    }, 3000);
+    return () => clearInterval(id);
+  }, [emblaApi, isPlaying, items.length]);
+
+  const handleMouseEnter = () => setIsPlaying(false);
+  const handleMouseLeave = () => setIsPlaying(true);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
     <section id="amenities" className="bg-white relative overflow-hidden">
@@ -102,8 +120,10 @@ export default function AmenitiesCarousel() {
         >
           {/* Heading */}
           <motion.header className="text-center" variants={fadeUp}>
-            <h2 className="font-semibold text-[#10410f] tracking-tight"
-              style={{ fontSize: "clamp(22px, 3.2vw, 38px)" }}>
+            <h2
+              className="font-semibold text-[#10410f] tracking-tight"
+              style={{ fontSize: "clamp(22px, 3.2vw, 38px)" }}
+            >
               AMENITIES AT 27 PALAZZO
             </h2>
           </motion.header>
@@ -124,76 +144,89 @@ export default function AmenitiesCarousel() {
             </TabButton>
           </motion.div>
 
-          {/* Carousel */}
-          {/* Carousel */}
+          {/* Carousel (Embla) */}
           <motion.div
             className="relative mt-8 sm:mt-12 lg:mt-16"
             variants={fadeUp}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            onTouchStart={() => setIsPaused(true)}
-            onTouchEnd={() => setIsPaused(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onTouchStart={() => setIsPlaying(false)}
+            onTouchEnd={() => setIsPlaying(true)}
           >
-            {/* Viewport frame: gives space for arrows to live inside safely */}
-            <div className="relative overflow-visible px-10 sm:px-12 lg:px-16">
-              {/* Nav buttons – always in frame, never clipped */}
-              <button
-                aria-label="Previous"
-                onClick={() => scrollByCards(-1)}
-                className={cn(
-                  "absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-50",
-                  "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
-                  "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
-                  "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-                  "flex items-center justify-center cursor-pointer"
-                )}
-              >
-                ‹
-              </button>
-              <button
-                aria-label="Next"
-                onClick={() => scrollByCards(1)}
-                className={cn(
-                  "absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-50",
-                  "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
-                  "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
-                  "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
-                  "flex items-center justify-center cursor-pointer"
-                )}
-              >
-                ›
-              </button>
-
-              {/* Viewport (clamps peeking) */}
-              <div className="overflow-hidden">
-                {/* Scroller */}
-                <div
-                  ref={scrollerRef}
+            {/* Viewport frame: space for arrows */}
+            <div className="relative overflow-visible px-10 sm:px-12 lg:px-16 z-[1]">
+              {/* Arrows on top layer; pointer-events-safe */}
+              <div className="pointer-events-none">
+                <button
+                  type="button"
+                  aria-label="Previous"
+                  onClick={scrollPrev}
+                  disabled={!prevBtnEnabled}
                   className={cn(
-                    "grid grid-flow-col overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2",
-                    // hide scrollbar
-                    "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
-                    // responsive gaps
-                    "gap-4 sm:gap-6 xl:gap-8",
-                    // responsive column widths
-                    // phones ~90% (1-up), tablets ~70%, md ~55% (2-up peek),
-                    // lg/xl/2xl -> exact 3-up using consistent calc with 64px gap
-                    "auto-cols-[90%] xs:auto-cols-[85%] sm:auto-cols-[72%] md:auto-cols-[55%] lg:auto-cols-[calc((100%-64px)/3)] xl:auto-cols-[calc((100%-64px)/3)] 2xl:auto-cols-[calc((100%-64px)/3)]"
+                    "absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-[70] pointer-events-auto",
+                    "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
+                    "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+                    "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+                    "flex items-center justify-center cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   )}
-                  style={{ scrollPaddingInline: "0px" }}
+                >
+                  ‹
+                </button>
+
+                <button
+                  type="button"
+                  aria-label="Next"
+                  onClick={scrollNext}
+                  disabled={!nextBtnEnabled}
+                  className={cn(
+                    "absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-[70] pointer-events-auto",
+                    "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
+                    "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
+                    "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
+                    "flex items-center justify-center cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  )}
+                >
+                  ›
+                </button>
+              </div>
+
+              {/* Embla viewport */}
+              <div className="overflow-hidden relative z-0" ref={emblaRef}>
+                {/* Embla container (flex, with responsive gaps) */}
+                <div
+                  className={cn(
+                    "flex gap-4 sm:gap-6 xl:gap-8",
+                    // hide scrollbar just in case
+                    "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                  )}
                 >
                   {items.map((item) => (
-                    <Card key={item.id} title={item.title} image={item.image} />
+                    <div
+                      key={item.id}
+                      // responsive slide widths (mirrors your previous grid breakpoints)
+                      className="
+                        flex-[0_0_90%]
+                        xs:flex-[0_0_85%]
+                        sm:flex-[0_0_72%]
+                        md:flex-[0_0_55%]
+                        lg:flex-[0_0_calc((100%-64px)/3)]
+                        xl:flex-[0_0_calc((100%-64px)/3)]
+                        2xl:flex-[0_0_calc((100%-64px)/3)]
+                        min-w-0
+                      "
+                      onTouchStart={() => setIsPlaying(false)}
+                      onTouchEnd={() => setIsPlaying(true)}
+                    >
+                      <Card title={item.title} image={item.image} />
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
           </motion.div>
-
         </motion.div>
       </div>
     </section>
-
   );
 }
 
@@ -216,7 +249,7 @@ function TabButton({
         "bg-neutral-500 text-white ring-1 ring-black/10",
         "hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009] hover:text-white cursor-pointer",
         active &&
-        "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.03]"
+          "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.03]"
       )}
     >
       {children}
@@ -247,7 +280,7 @@ function Card({ title, image }: { title: string; image: string }) {
       >
         {/* Inner white container */}
         <div className="rounded-[12px] bg-white overflow-hidden h-full flex flex-col">
-          {/* ✅ Image area — no border, no outline, no ring */}
+          {/* Image */}
           <div className="relative w-full flex-1 overflow-hidden">
             <Image
               src={image}
@@ -261,8 +294,7 @@ function Card({ title, image }: { title: string; image: string }) {
               "
               priority
             />
-
-            {/* Title overlay pinned at bottom of image */}
+            {/* Title overlay */}
             <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
               <div
                 className="
@@ -286,6 +318,3 @@ function Card({ title, image }: { title: string; image: string }) {
     </motion.article>
   );
 }
-
-
-

@@ -68,17 +68,17 @@ export default function ConnectivityHighlights() {
 
       <div className="relative z-10 mx-auto max-w-[1260px] px-4 py-16 sm:px-6 lg:px-8">
         {/* heading */}
-      <div className="text-center mb-10">
-  <h4
-    id="connectivity-heading"
-    className="font-semibold text-white tracking-tight text-[30px] leading-[1.2]"
-  >
-    CONNECTIVITY HIGHLIGHTS
-  </h4>
-  <h5 className="mt-2 text-white font-normal text-[24px] leading-[1.4]">
-    Enjoy seamless access to Mumbai’s prime destinations
-  </h5>
-</div>
+        <div className="text-center mb-10">
+          <h3
+            id="connectivity-heading"
+            className="font-semibold text-white tracking-tight text-[32px] leading-[1.2]"
+          >
+            CONNECTIVITY HIGHLIGHTS
+          </h3>
+          <h5 className="mt-2 text-white font-normal text-[24px] leading-[1.4]">
+            Enjoy seamless access to Mumbai’s prime destinations
+          </h5>
+        </div>
 
 
         {/* cards with staggered fade-up */}

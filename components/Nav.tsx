@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { AlignLeft, X } from "lucide-react";
+import { AlignLeft, X, ChevronRight } from "lucide-react";
 
 type NavItem = { name: string; href: string };
 
@@ -23,7 +23,6 @@ export default function Nav() {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   // ----- SCROLL-SPY STATE -----
   const [activeHash, setActiveHash] = useState<string>("#home");
@@ -41,7 +40,10 @@ export default function Nav() {
     window.scrollTo({ top, behavior: "smooth" });
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
     e.preventDefault();
     if (href.startsWith("#")) {
       if (pathname === "/") {
@@ -81,10 +83,8 @@ export default function Nav() {
       .filter(Boolean) as HTMLElement[];
     if (!els.length) return;
 
-    // Trigger when a section is under the nav and at least ~20% visible.
     const observer = new IntersectionObserver(
       (entries) => {
-        // Pick the entry with greatest intersectionRatio that is intersecting
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -92,7 +92,6 @@ export default function Nav() {
         if (visible?.target?.id) {
           setActiveHash(`#${visible.target.id}`);
         } else {
-          // Fallback: if none intersect (fast scroll), find the section closest to top
           const nearest = els.reduce(
             (best, el) => {
               const dist = Math.abs(el.getBoundingClientRect().top - NAV_HEIGHT);
@@ -105,8 +104,8 @@ export default function Nav() {
       },
       {
         root: null,
-        // Top margin = offset for sticky nav; bottom negative margin stops late switching
-        rootMargin: `-${NAV_HEIGHT + 6}px 0px -70% 0px`,
+        // Slightly larger top offset on mobile to avoid early switching
+        rootMargin: `-${NAV_HEIGHT + 10}px 0px -70% 0px`,
         threshold: [0, 0.15, 0.25, 0.5, 0.75, 1],
       }
     );
@@ -118,15 +117,16 @@ export default function Nav() {
 
   const isActive = (href: string) => pathname === "/" && activeHash === href;
 
+  // Lock body scroll when drawer open
   useEffect(() => {
-    const handleScroll = () => {
-      const total = document.body.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / total) * 100;
-      setScrollProgress(progress);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    if (isOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [isOpen]);
 
   return (
     <header
@@ -136,7 +136,13 @@ export default function Nav() {
       {/* Desktop */}
       <div className="hidden md:flex h-full items-center justify-between px-[9%]">
         <Link href="/" aria-label="Home" className="shrink-0">
-          <Image src="/Images/Chothani_Logo.png" alt="Chothani Logo" width={75} height={54} priority />
+          <Image
+            src="/Images/Chothani_Logo.png"
+            alt="Chothani Logo"
+            width={75}
+            height={54}
+            priority
+          />
         </Link>
 
         <nav>
@@ -148,9 +154,10 @@ export default function Nav() {
                   onClick={(e) => handleNavClick(e, item.href)}
                   prefetch={false}
                   className={`relative px-[0.8vw] py-[0.4vw] text-[0.9vw] transition-all duration-300
-                    ${isActive(item.href)
-                      ? "bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] text-black"
-                      : "text-white"
+                    ${
+                      isActive(item.href)
+                        ? "bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] text-black"
+                        : "text-white"
                     }
                     hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519] hover:text-black
                   `}
@@ -171,87 +178,164 @@ export default function Nav() {
           rel="noopener noreferrer"
           className="transition-transform hover:scale-105"
         >
-          <Image src="/Images/map.png" alt="Google Map Location" width={32} height={32} className="w-[1.7vw] h-auto" />
+          <Image
+            src="/Images/map.png"
+            alt="Google Map Location"
+            width={28}
+            height={28}
+            className="w-[1.7vw] h-auto"
+          />
         </Link>
       </div>
 
       {/* Mobile */}
       <div className="flex md:hidden h-full items-center justify-between px-4 relative">
-        <button onClick={() => setIsOpen((p) => !p)} aria-label="Toggle menu" className="p-2 text-white">
+        {/* Burger */}
+        <button
+          onClick={() => setIsOpen((p) => !p)}
+          aria-label="Toggle menu"
+          className="p-2 -ml-1 rounded-md active:scale-95 text-white"
+        >
           <div className="relative w-6 h-6">
-            <AlignLeft className={`absolute inset-0 w-6 h-6 transition-all ${isOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100"}`} />
-            <X className={`absolute inset-0 w-6 h-6 transition-all ${isOpen ? "opacity-100 scale-100" : "opacity-0 -rotate-90 scale-0"}`} />
+            <AlignLeft
+              className={`absolute inset-0 w-6 h-6 transition-all ${
+                isOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100"
+              }`}
+            />
+            <X
+              className={`absolute inset-0 w-6 h-6 transition-all ${
+                isOpen ? "opacity-100 scale-100" : "opacity-0 -rotate-90 scale-0"
+              }`}
+            />
           </div>
         </button>
 
-        <Link href="/" className="absolute left-1/2 -translate-x-1/2" aria-label="Home">
-          <Image src="/Images/Chothani_Logo.png" alt="Chothani Logo" width={75} height={54} priority />
+        {/* Center logo */}
+        <Link
+          href="/"
+          className="absolute left-1/2 -translate-x-1/2"
+          aria-label="Home"
+        >
+          <Image
+            src="/Images/Chothani_Logo.png"
+            alt="Chothani Logo"
+            width={72}
+            height={52}
+            priority
+          />
         </Link>
 
+        {/* Map icon (fixed px, not vw) */}
         <Link
           href="https://maps.google.com/?q=72+Union+Park,+Trilok+Kapoor+Marg,+Chembur+East,+Mumbai+400071"
           target="_blank"
           rel="noopener noreferrer"
-          className="transition-transform hover:scale-105"
+          className="transition-transform hover:scale-105 p-2 -mr-1"
+          aria-label="Open Google Maps"
         >
-          <Image src="/Images/map.png" alt="Google Map Location" width={32} height={32} className="w-[1.7vw] h-auto" />
+          <Image
+            src="/Images/map.png"
+            alt="Google Map Location"
+            width={24}
+            height={24}
+            className="w-6 h-6"
+          />
         </Link>
 
         {/* Overlay */}
         <div
-          className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity z-40 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-            }`}
+          className={`fixed inset-0 bg-black/45 backdrop-blur-sm transition-opacity z-40 ${
+            isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
           onClick={() => setIsOpen(false)}
         />
 
         {/* Drawer */}
         <aside
-          className={`fixed top-0 left-0 h-full w-[280px] bg-[#B7A887] z-50 border-r-4 border-white 
-transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform 
-${isOpen ? "translate-x-0 opacity-100 scale-100" : "-translate-x-full opacity-50 scale-[0.96]"}`}
+          className={`
+            fixed top-0 left-0 h-[100dvh] w-[86vw] max-w-[340px]
+            bg-[#0E3C14] z-50 border-r-4 border-white/10
+            transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+            ${isOpen ? "translate-x-0" : "-translate-x-full"}
+            flex flex-col
+            pt-[max(env(safe-area-inset-top),12px)]
+          `}
         >
-          <div className="flex items-center justify-between p-4">
-            <Link href="/" onClick={() => setIsOpen(false)}>
-              <Image src="/Images/Chothani_Logo.png" alt="Chothani Logo" width={75} height={54} priority />
+          {/* Drawer header */}
+          <div className="flex items-center justify-between px-4 pb-3">
+            <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home">
+              <Image
+                src="/Images/Chothani_Logo.png"
+                alt="Chothani Logo"
+                width={70}
+                height={50}
+                priority
+              />
             </Link>
-            <button onClick={() => setIsOpen(false)} aria-label="Close menu" className="p-2 hover:bg-black/10 rounded">
-              <X className="w-5 h-5" />
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Close menu"
+              className="p-2 rounded hover:bg-white/10 active:scale-95"
+            >
+              <X className="w-5 h-5 text-white" />
             </button>
           </div>
 
-          <nav className="p-4">
-            <ul className="space-y-1">
-              {NAV_ITEMS.map((item, i) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
-                    prefetch={false}
-                    className={`block px-4 py-3 rounded-lg font-semibold transition-all duration-300 ${isActive(item.href)
-                      ? "bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] text-black"
-                      : "text-black hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519] hover:text-black"
-                      }`}
-                    style={{ transitionDelay: `${i * 40}ms` }}
-                  >
-                    <span className="relative group">
-                      {item.name}
-                      <span className="absolute left-0 -bottom-[4px] w-0 h-[2px] bg-gradient-to-r from-[#E9A519] via-[#F6DA76] to-[#E9A519] transition-all duration-300 group-hover:w-full" style={{ width: `${scrollProgress}%` }} />
+          <div className="h-px bg-white/50 mx-4" />
 
-                    </span>
-                  </Link>
-                </li>
-              ))}
+          {/* Scrollable nav list */}
+          <nav className="px-2 py-2 overflow-y-auto overscroll-contain max-h-[calc(100dvh-180px)]">
+            <ul className="space-y-2">
+              {NAV_ITEMS.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <li key={item.name}>
+                    <Link
+                      href={item.href}
+                      onClick={(e) => handleNavClick(e, item.href)}
+                      prefetch={false}
+                      className={`
+                        group flex items-center justify-between gap-2
+                        px-4 py-3 rounded-lg font-semibold
+                        transition-all duration-300
+                        ${
+                          active
+                            ? "text-black bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] shadow-sm"
+                            : "text-white hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519]"
+                        }
+                        relative
+                      `}
+                    >
+                      {/* Left accent for active */}
+                      <span
+                        className={`
+                          absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r
+                          ${active ? "bg-[#0E3C14]" : "bg-transparent group-hover:bg-[#0E3C14]"}
+                          transition-all
+                        `}
+                      />
+                      <span className="pl-1">{item.name}</span>
+                      {/* <ChevronRight className="w-5 h-5 opacity-70 group-hover:translate-x-0.5 transition-transform" /> */}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
-          <div className="absolute bottom-4 left-0 w-full flex justify-center">
+          {/* Footer / Map CTA */}
+          <div className="mt-auto px-4 pb-[max(env(safe-area-inset-bottom),14px)]">
+            <div className="h-px bg-white/50 mb-3" />
             <Link
               href="https://maps.google.com/?q=72+Union+Park,+Trilok+Kapoor+Marg,+Chembur+East,+Mumbai+400071"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-transform hover:scale-105"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg
+                         bg-[linear-gradient(90deg,rgba(199,112,3,1)0%,rgba(254,235,146,1)69%,rgba(255,232,69,1)100%)]
+                         text-[#0c0000] font-semibold active:scale-[0.99]"
             >
-              <Image src="/Images/map.png" alt="Google Map Location" width={32} height={32} className="w-[1.7vw] h-auto" />
+              <Image src="/Images/map.png" alt="Google Map" width={18} height={18} />
+              View Location
             </Link>
           </div>
         </aside>

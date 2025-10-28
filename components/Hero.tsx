@@ -107,14 +107,15 @@ export default function Hero() {
         {/* ===== Bottom: Project Overview ===== */}
         {/* mt / pt scaled by viewport so it sits lower like the screenshot */}
         <motion.div
-          className="max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8 mt-[20px] sm:mt-[220px] md:mt-[360px] lg:mt-[500px] pt-[40px] sm:pt-[140px] md:pt-[220px] lg:pt-[300px] pb-12 lg:pb-20"
+          className="max-w-[1464px] mx-auto px-4 sm:px-6 lg:px-8 mt-[20px] sm:mt-[220px] md:mt-[360px] lg:mt-[300px] pt-[40px] sm:pt-[140px] md:pt-[220px] lg:pt-[300px]"
+
           id="about-us"
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.25 }}
         >
-          <div className="flex flex-col lg:flex-row items-start gap-10">
+          <div className="flex flex-col lg:flex-row items-center gap-10">
             {/* LEFT: Image (≈38%) */}
             <motion.div className="w-full lg:w-[47%] flex justify-center lg:justify-start" variants={fadeUp}>
               <div className="relative w-full max-w-[640px]">

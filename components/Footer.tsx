@@ -92,7 +92,7 @@ export default function Footer() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeIn}
         >
-          <div className="flex flex-col lg:flex-row justify-between gap-10 lg:gap-14">
+          <div className="flex flex-col lg:flex-row justify-between gap-10 lg:gap-14 items-center lg:items-start text-center lg:text-left">
             {/* Partner Section */}
             <motion.div className="w-full lg:w-[25%]" variants={fadeUp}>
               <div className="text-[#f3d567] text-[20px] tracking-wide mb-3 text-center">
@@ -111,7 +111,7 @@ export default function Footer() {
 
             {/* Menu Section (staggered items) */}
             <motion.div className="w-full lg:w-[12%]" variants={fadeUp}>
-              <motion.ul className="mt-1 space-y-4" variants={staggerList}>
+              <motion.ul className="mt-1 space-y-4 flex flex-col items-center lg:items-start" variants={staggerList}>
                 {footerLinks.map((l) => (
                   <motion.li key={l.name} variants={fadeIn} className="flex items-center gap-3 group">
                     <span className="inline-block h-3 w-3 rounded-full bg-white/40 transition-all duration-300 group-hover:bg-gradient-to-b group-hover:from-[#F0B12B] group-hover:to-[#B47009]" />
@@ -131,9 +131,9 @@ export default function Footer() {
             </motion.div>
 
             {/* Contact Section */}
-            <motion.div className="w-full lg:w-[30%] lg:border-l lg:border-white/15 lg:pl-10" variants={fadeUp}>
+            <motion.div className="w-full lg:w-[30%] lg:border-l lg:border-white/15 lg:pl-10 text-center lg:text-left" variants={fadeUp}>
               <h3 className="text-white font-semibold text-2xl mb-6">Contact Us</h3>
-              <div className="flex items-start gap-3 mb-4">
+              <div className="flex items-center lg:items-start justify-center lg:justify-start gap-3 mb-4">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
                   <Image src="/Images/call.png" alt="Call" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
@@ -141,7 +141,7 @@ export default function Footer() {
                   +91 88286 07952
                 </a>
               </div>
-              <div className="flex items-start gap-3 mb-6">
+              <div className="flex items-center lg:items-start justify-center lg:justify-start gap-3 mb-6">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
                   <Image src="/Images/sms.png" alt="Mail" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
@@ -149,7 +149,7 @@ export default function Footer() {
                   contactus@avighnaspaces.com
                 </a>
               </div>
-              <div>
+              <div className="flex justify-center lg:justify-start">
                 <div
                   className="inline-block text-[#0c0000] font-semibold px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
                   style={{
@@ -163,9 +163,9 @@ export default function Footer() {
             </motion.div>
 
             {/* Address Section */}
-            <motion.div className="w-full lg:w-[33%] lg:border-l lg:border-white/15 lg:pl-10" variants={fadeUp}>
+            <motion.div className="w-full lg:w-[33%] lg:border-l lg:border-white/15 lg:pl-10 text-center lg:text-left" variants={fadeUp}>
               <h3 className="text-white font-semibold text-2xl mb-6">Address</h3>
-              <div className="flex items-start gap-3">
+              <div className="flex items-center lg:items-start justify-center lg:justify-start gap-3">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
                   <Image src="/Images/addressloc.png" alt="Map Pin" width={32} height={32} className="object-contain w-full h-full" />
                 </span>
