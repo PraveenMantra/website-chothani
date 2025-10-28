@@ -154,7 +154,7 @@ export default function AmenitiesCarousel() {
             onTouchEnd={() => setIsPlaying(true)}
           >
             {/* Viewport frame: space for arrows */}
-            <div className="relative overflow-visible px-10 sm:px-12 lg:px-16 z-[1]">
+            <div className="relative overflow-visible px-1 sm:px-12 lg:px-16 z-[1]">
               {/* Arrows on top layer; pointer-events-safe */}
               <div className="pointer-events-none">
                 <button
@@ -163,7 +163,7 @@ export default function AmenitiesCarousel() {
                   onClick={scrollPrev}
                   disabled={!prevBtnEnabled}
                   className={cn(
-                    "absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-[70] pointer-events-auto",
+                    "absolute -bottom-12 right-1/2 -translate-x-1/2 sm:translate-x-0  sm:left-3 sm:top-1/2 sm:-translate-y-1/2 z-[70] pointer-events-auto",
                     "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
                     "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
                     "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
@@ -179,7 +179,7 @@ export default function AmenitiesCarousel() {
                   onClick={scrollNext}
                   disabled={!nextBtnEnabled}
                   className={cn(
-                    "absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-[70] pointer-events-auto",
+                    "absolute -bottom-12 left-1/2 -translate-x-1/2 sm:-translate-x-0 sm:left-auto sm:right-3 sm:top-1/2 sm:-translate-y-1/2 z-[70] pointer-events-auto ml-[10%]",
                     "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 rounded-[6px] text-white text-xl sm:text-2xl",
                     "bg-[linear-gradient(180deg,#e2a22b_0%,#f1c35a_60%,#e09a1e_100%)]",
                     "shadow-[0_6px_16px_rgba(0,0,0,0.15)] hover:brightness-[1.02] active:scale-95",
@@ -191,11 +191,11 @@ export default function AmenitiesCarousel() {
               </div>
 
               {/* Embla viewport */}
-              <div className="overflow-hidden relative z-0" ref={emblaRef}>
+              <div className="overflow-hidden relative z-0 " ref={emblaRef}>
                 {/* Embla container (flex, with responsive gaps) */}
                 <div
                   className={cn(
-                    "flex gap-4 sm:gap-6 xl:gap-8",
+                    "flex",
                     // hide scrollbar just in case
                     "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                   )}
@@ -204,16 +204,7 @@ export default function AmenitiesCarousel() {
                     <div
                       key={item.id}
                       // responsive slide widths (mirrors your previous grid breakpoints)
-                      className="
-                        flex-[0_0_90%]
-                        xs:flex-[0_0_85%]
-                        sm:flex-[0_0_72%]
-                        md:flex-[0_0_55%]
-                        lg:flex-[0_0_calc((100%-64px)/3)]
-                        xl:flex-[0_0_calc((100%-64px)/3)]
-                        2xl:flex-[0_0_calc((100%-64px)/3)]
-                        min-w-0
-                      "
+                      className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] min-w-0 px-4"
                       onTouchStart={() => setIsPlaying(false)}
                       onTouchEnd={() => setIsPlaying(true)}
                     >
@@ -267,7 +258,6 @@ function Card({ title, image }: { title: string; image: string }) {
         max-w-[440px] lg:max-w-none
         h-[492px]
         rounded-[18px] bg-white p-[14px]
-        shadow-[0_10px_28px_rgba(0,0,0,0.10)]
         border-[1px] border-[#a18050]
         group
       "
