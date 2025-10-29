@@ -34,10 +34,10 @@ export default function RootLayout({
         {/* <CommentsProvider> */}
         {children}
         {/* Plugin Script */}
-        {/* <Script
+        <Script
           src="https://mantracollab-cdns.s3.ca-central-1.amazonaws.com/comment-widget.min.js"
           strategy="afterInteractive"
-        /> */}
+        />
         <Nav />
         <ScrollToTopButton />
         <ScrollActionButtons />
