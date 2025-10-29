@@ -1,6 +1,7 @@
 import HomeClient from "@/components/HomeClient/HomeClient";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { fetchGalleriesByTab } from "@/lib/galleries";
 
 /* ---------------- Meta Information ---------------- */
 export const metadata: Metadata = {
@@ -45,10 +46,11 @@ export const metadata: Metadata = {
 };
 
 /* ---------------- Page Component ---------------- */
-export default function Home() {
+export default async function Home() {
+  const galleriesByTab = await fetchGalleriesByTab();
   return (
     <>
-      <HomeClient />
+      <HomeClient galleriesByTab={galleriesByTab}/>
     </>
   );
 }

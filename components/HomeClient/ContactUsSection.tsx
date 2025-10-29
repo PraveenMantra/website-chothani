@@ -121,8 +121,6 @@ export default function ContactUsSection() {
       });
 
       const data = await res.json();
-
-      console.log("data===>>>", data);
       
 
       // ✅ Handle your API response structure

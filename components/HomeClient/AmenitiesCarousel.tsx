@@ -6,32 +6,11 @@ import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
+import { GalleriesByTab } from "@/lib/galleries";
 
 /* ------------------ Data ------------------ */
 type CardItem = { id: string; title: string; image: string };
 type TabKey = "floorPlans" | "amenities" | "elevation";
-
-const BUILDING_IMG = "/Images/building.png";
-
-const DATA: Record<TabKey, CardItem[]> = {
-  floorPlans: [
-    { id: "fp-1", title: "2 BHK – Type A", image: BUILDING_IMG },
-    { id: "fp-2", title: "2 BHK – Type B", image: BUILDING_IMG },
-    { id: "fp-3", title: "3 BHK – Type A", image: BUILDING_IMG },
-  ],
-  amenities: [
-    { id: "am-1", title: "Double-Height Building Lobby", image: BUILDING_IMG },
-    { id: "am-2", title: "Fitness Centre", image: BUILDING_IMG },
-    { id: "am-3", title: "Sky Garden", image: BUILDING_IMG },
-    { id: "am-4", title: "Indoor Games", image: BUILDING_IMG },
-    { id: "am-5", title: "Kids’ Play Zone", image: BUILDING_IMG },
-  ],
-  elevation: [
-    { id: "el-1", title: "Front Elevation", image: BUILDING_IMG },
-    { id: "el-2", title: "Side Elevation", image: BUILDING_IMG },
-    { id: "el-3", title: "Rear Elevation", image: BUILDING_IMG },
-  ],
-};
 
 /* ------------------ Animations ------------------ */
 const fadeUp: Variants = {
@@ -51,9 +30,12 @@ const staggerContainer: Variants = {
 };
 
 /* ------------------ Component ------------------ */
-export default function AmenitiesCarousel() {
+export default function AmenitiesCarousel({ initialData }: { initialData: GalleriesByTab }) {
   const [tab, setTab] = useState<TabKey>("amenities");
-  const items = useMemo(() => DATA[tab], [tab]);
+  
+  // Seed from server data
+  const [dataByTab, setDataByTab] = useState<GalleriesByTab>(initialData);
+  const items = useMemo(() => dataByTab[tab], [dataByTab, tab]);
 
   // Embla setup (behavior cloned from your working project)
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -146,7 +128,7 @@ export default function AmenitiesCarousel() {
 
           {/* Carousel (Embla) */}
           <motion.div
-            className="relative mt-8 sm:mt-12 lg:mt-16"
+            className="relative mt-8 sm:mt-12 lg:mt-16 mb-10 sm:mb-0"
             variants={fadeUp}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -240,7 +222,7 @@ function TabButton({
         "bg-neutral-500 text-white ring-1 ring-black/10",
         "hover:bg-gradient-to-b hover:from-[#F0B12B] hover:to-[#B47009] hover:text-white cursor-pointer",
         active &&
-          "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.03]"
+        "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white shadow-md scale-[1.03]"
       )}
     >
       {children}

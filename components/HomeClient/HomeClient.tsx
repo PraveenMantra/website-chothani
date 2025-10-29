@@ -13,8 +13,9 @@ import LocationSection from './LocationSection';
 import ContactUsSection from './ContactUsSection';
 import StatsTiles from './StatsTiles';
 import DisclaimerSection from './DisclaimerSection';
+import { GalleriesByTab } from '@/lib/galleries';
 
-export default function HomeClient() {
+export default function HomeClient({ galleriesByTab }: { galleriesByTab: GalleriesByTab }) {
     // useCommentsPage("Home");
     return (
         <>
@@ -23,7 +24,7 @@ export default function HomeClient() {
                 <GreenMap />
                 <WhyChoose />
                 <ConnectivityHighlights />
-                <AmenitiesCarousel />
+                <AmenitiesCarousel initialData={galleriesByTab}/>
                 <LocationSection />
                 <ContactUsSection />
                 <StatsTiles />
