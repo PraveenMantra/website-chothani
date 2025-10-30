@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
-import { AlignLeft, X, ChevronRight } from "lucide-react";
+import { AlignLeft, X, Instagram, Facebook } from "lucide-react";
 import { scrollToSection } from "@/utils/scrollToSection";
 
 type NavItem = { name: string; href: string };
@@ -48,59 +48,6 @@ function SocialIcon({
       <span className="sr-only">{label}</span>
       {children}
     </Link>
-  );
-}
-
-function InstagramSVG({ className = "w-7 h-7" }) {
-  const uniqueId = React.useId();
-  const gradientId = `ig-grad-${uniqueId}`;
-
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      fill="none"
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" fill={`url(#${gradientId})`} />
-      <defs>
-        <linearGradient id={gradientId} x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F58529" />
-          <stop offset="0.35" stopColor="#DD2A7B" />
-          <stop offset="0.7" stopColor="#8134AF" />
-          <stop offset="1" stopColor="#515BD4" />
-        </linearGradient>
-      </defs>
-      <circle cx="12" cy="12" r="4.2" stroke="white" strokeWidth="1.8" />
-      <circle cx="16.8" cy="7.2" r="1.1" fill="white" />
-      <rect
-        x="2.9"
-        y="2.9"
-        width="18.2"
-        height="18.2"
-        rx="4.1"
-        stroke="white"
-        strokeOpacity=".35"
-      />
-    </svg>
-  );
-}
-
-
-function FacebookSVG({ className = "w-7 h-7 md:w-7 md:h-7" }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      fill="none"
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" fill="#1877F2" />
-      <path
-        d="M13.5 10.2V8.9c0-.6.4-1 1-1h1.2V6h-1.9c-1.8 0-3 1.1-3 2.9v1.3H9v1.9h1.8V18h2.1v-5.9h1.8l.3-1.9h-2.5z"
-        fill="white"
-      />
-    </svg>
   );
 }
 
@@ -267,10 +214,10 @@ export default function Nav() {
         </nav>
         <div className="flex items-center gap-3">
           <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
-            <InstagramSVG />
+           <Instagram color="white"/> 
           </SocialIcon>
           <SocialIcon href={FACEBOOK_URL} label="Open Facebook">
-            <FacebookSVG />
+            <Facebook  color="white"/>
           </SocialIcon>
 
           <Link
@@ -428,10 +375,10 @@ export default function Nav() {
             {/* Social icons row */}
             <div className="flex items-center justify-center gap-6 mb-4">
               <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
-                <InstagramSVG />
+                <Instagram color="white"/>
               </SocialIcon>
               <SocialIcon href={FACEBOOK_URL} label="Open Facebook">
-                <FacebookSVG />
+                <Facebook color="white"/>
               </SocialIcon>
             </div>
 
