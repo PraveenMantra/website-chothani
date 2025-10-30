@@ -65,11 +65,14 @@ export default function Hero() {
 
                 {/* Description */}
                 <p
-                  className="
-    mt-4 text-[13px] leading-relaxed font-medium text-black
-    rounded-md p-3
-    shadow-[inset_0_1px_3px_rgba(255,255,255,0.4),0_4px_10px_rgba(0,0,0,0.15)]
-  "
+                  className={`
+  mt-4
+  text-[14px] sm:text-[16px] lg:text-[18px]
+  leading-[1.4]
+  font-semibold text-black
+  rounded-md p-3
+  shadow-[inset_0_1px_3px_rgba(255,255,255,0.4),0_4px_10px_rgba(0,0,0,0.15)]
+`}
                   style={{
                     background:
                       "linear-gradient(90deg, rgba(254,182,40,1) 0%, rgba(255,231,143,1) 50%, rgba(255,183,14,1) 100%)",

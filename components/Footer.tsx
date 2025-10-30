@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
+import { scrollToSection } from "@/utils/scrollToSection";
 
 interface FooterLink {
   name: string;
@@ -74,7 +75,7 @@ export default function Footer() {
         style={{ backgroundImage: "url('/Images/footer_mainBg.webp')" }}
       >
         {/* Optional overlay pattern */}
-        <div
+        {/* <div
           className="absolute inset-0 opacity-[0.12] pointer-events-none"
           style={{
             backgroundImage: "url('/Images/footer_pattern.webp')",
@@ -82,7 +83,7 @@ export default function Footer() {
             backgroundPosition: "center",
           }}
           aria-hidden
-        />
+        /> */}
 
         {/* Main container */}
         <motion.div
@@ -94,7 +95,7 @@ export default function Footer() {
         >
           <div className="flex flex-col lg:flex-row justify-between gap-10 lg:gap-14 items-center lg:items-start text-center lg:text-left">
             {/* Partner Section */}
-            <motion.div className="w-full lg:w-[25%]" variants={fadeUp}>
+            <motion.div className="w-full lg:w-[25%] cursor-pointer" variants={fadeUp} onClick={() => scrollToSection("home")}>
               <div className="text-[#f3d567] text-[20px] tracking-wide mb-3 text-center">
                 CHIEF MARKETING PARTNER
               </div>

@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AlignLeft, X, ChevronRight } from "lucide-react";
+import { scrollToSection } from "@/utils/scrollToSection";
 
 type NavItem = { name: string; href: string };
 
@@ -18,6 +19,90 @@ const NAV_ITEMS: NavItem[] = [
   { name: "LOCATION", href: "#location" },
   { name: "CONTACT US", href: "#contact-us" },
 ];
+
+const INSTAGRAM_URL = "https://www.instagram.com/chothani.buildcorp/?igsh=MTI0a2JvY3hsM3V3dA%3D%3D#";
+const FACEBOOK_URL = "https://www.facebook.com/share/1Be837Emat/";
+
+function SocialIcon({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
+      className="
+        inline-grid place-items-center rounded-md
+        transition-transform hover:scale-105 focus:scale-105
+        outline-none focus:ring-2 focus:ring-white/60
+      "
+    >
+      <span className="sr-only">{label}</span>
+      {children}
+    </Link>
+  );
+}
+
+function InstagramSVG({ className = "w-7 h-7" }) {
+  const uniqueId = React.useId();
+  const gradientId = `ig-grad-${uniqueId}`;
+
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" fill={`url(#${gradientId})`} />
+      <defs>
+        <linearGradient id={gradientId} x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#F58529" />
+          <stop offset="0.35" stopColor="#DD2A7B" />
+          <stop offset="0.7" stopColor="#8134AF" />
+          <stop offset="1" stopColor="#515BD4" />
+        </linearGradient>
+      </defs>
+      <circle cx="12" cy="12" r="4.2" stroke="white" strokeWidth="1.8" />
+      <circle cx="16.8" cy="7.2" r="1.1" fill="white" />
+      <rect
+        x="2.9"
+        y="2.9"
+        width="18.2"
+        height="18.2"
+        rx="4.1"
+        stroke="white"
+        strokeOpacity=".35"
+      />
+    </svg>
+  );
+}
+
+
+function FacebookSVG({ className = "w-7 h-7 md:w-7 md:h-7" }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" fill="#1877F2" />
+      <path
+        d="M13.5 10.2V8.9c0-.6.4-1 1-1h1.2V6h-1.9c-1.8 0-3 1.1-3 2.9v1.3H9v1.9h1.8V18h2.1v-5.9h1.8l.3-1.9h-2.5z"
+        fill="white"
+      />
+    </svg>
+  );
+}
 
 export default function Nav() {
   const pathname = usePathname();
@@ -135,7 +220,17 @@ export default function Nav() {
     >
       {/* Desktop */}
       <div className="hidden md:flex h-full items-center justify-between px-[9%]">
-        <Link href="/" aria-label="Home" className="shrink-0">
+        <Link
+          href="/"
+          aria-label="Home"
+          className="shrink-0 cursor-pointer"
+          onClick={(e) => {
+            if (window.location.pathname === "/") {
+              e.preventDefault();
+              scrollToSection("home");
+            }
+          }}
+        >
           <Image
             src="/Images/Chothani_Logo.png"
             alt="Chothani Logo"
@@ -154,10 +249,9 @@ export default function Nav() {
                   onClick={(e) => handleNavClick(e, item.href)}
                   prefetch={false}
                   className={`relative px-[0.8vw] py-[0.4vw] text-[0.9vw] transition-all duration-300
-                    ${
-                      isActive(item.href)
-                        ? "bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] text-black"
-                        : "text-white"
+                    ${isActive(item.href)
+                      ? "bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] text-black"
+                      : "text-white"
                     }
                     hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519] hover:text-black
                   `}
@@ -171,21 +265,29 @@ export default function Nav() {
             ))}
           </ul>
         </nav>
+        <div className="flex items-center gap-3">
+          <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
+            <InstagramSVG />
+          </SocialIcon>
+          <SocialIcon href={FACEBOOK_URL} label="Open Facebook">
+            <FacebookSVG />
+          </SocialIcon>
 
-        <Link
-          href="https://maps.google.com/?q=72+Union+Park,+Trilok+Kapoor+Marg,+Chembur+East,+Mumbai+400071"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-transform hover:scale-105"
-        >
-          <Image
-            src="/Images/map.png"
-            alt="Google Map Location"
-            width={28}
-            height={28}
-            className="w-[1.7vw] h-auto"
-          />
-        </Link>
+          <Link
+            href="https://maps.google.com/?q=72+Union+Park,+Trilok+Kapoor+Marg,+Chembur+East,+Mumbai+400071"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-transform hover:scale-105"
+          >
+            <Image
+              src="/Images/map.png"
+              alt="Google Map Location"
+              width={23.33}
+              height={23.33}
+              className="w-[23.33px] h-[23.33px]"
+            />
+          </Link>
+        </div>
       </div>
 
       {/* Mobile */}
@@ -198,14 +300,12 @@ export default function Nav() {
         >
           <div className="relative w-6 h-6">
             <AlignLeft
-              className={`absolute inset-0 w-6 h-6 transition-all ${
-                isOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100"
-              }`}
+              className={`absolute inset-0 w-6 h-6 transition-all ${isOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100"
+                }`}
             />
             <X
-              className={`absolute inset-0 w-6 h-6 transition-all ${
-                isOpen ? "opacity-100 scale-100" : "opacity-0 -rotate-90 scale-0"
-              }`}
+              className={`absolute inset-0 w-6 h-6 transition-all ${isOpen ? "opacity-100 scale-100" : "opacity-0 -rotate-90 scale-0"
+                }`}
             />
           </div>
         </button>
@@ -244,9 +344,8 @@ export default function Nav() {
 
         {/* Overlay */}
         <div
-          className={`fixed inset-0 bg-black/45 backdrop-blur-sm transition-opacity z-40 ${
-            isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-          }`}
+          className={`fixed inset-0 bg-black/45 backdrop-blur-sm transition-opacity z-40 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+            }`}
           onClick={() => setIsOpen(false)}
         />
 
@@ -298,10 +397,9 @@ export default function Nav() {
                         group flex items-center justify-between gap-2
                         px-4 py-3 rounded-lg font-semibold
                         transition-all duration-300
-                        ${
-                          active
-                            ? "text-black bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] shadow-sm"
-                            : "text-white hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519]"
+                        ${active
+                          ? "text-black bg-gradient-to-b from-[#E9A519] via-[#F6DA76] to-[#E9A519] shadow-sm"
+                          : "text-white hover:bg-gradient-to-b hover:from-[#E9A519] hover:via-[#F6DA76] hover:to-[#E9A519]"
                         }
                         relative
                       `}
@@ -326,20 +424,33 @@ export default function Nav() {
           {/* Footer / Map CTA */}
           <div className="mt-auto px-4 pb-[max(env(safe-area-inset-bottom),14px)]">
             <div className="h-px bg-white/50 mb-3" />
+
+            {/* Social icons row */}
+            <div className="flex items-center justify-center gap-6 mb-4">
+              <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
+                <InstagramSVG />
+              </SocialIcon>
+              <SocialIcon href={FACEBOOK_URL} label="Open Facebook">
+                <FacebookSVG />
+              </SocialIcon>
+            </div>
+
+            {/* Map CTA */}
             <Link
               href="https://maps.google.com/?q=72+Union+Park,+Trilok+Kapoor+Marg,+Chembur+East,+Mumbai+400071"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 py-3 rounded-lg
-                         bg-[linear-gradient(90deg,rgba(199,112,3,1)0%,rgba(254,235,146,1)69%,rgba(255,232,69,1)100%)]
-                         text-[#0c0000] font-semibold active:scale-[0.99]"
+               bg-[linear-gradient(90deg,rgba(199,112,3,1)0%,rgba(254,235,146,1)69%,rgba(255,232,69,1)100%)]
+               text-[#0c0000] font-semibold active:scale-[0.99]"
             >
               <Image src="/Images/map.png" alt="Google Map" width={18} height={18} />
               View Location
             </Link>
           </div>
+
         </aside>
       </div>
-    </header>
+    </header >
   );
 }

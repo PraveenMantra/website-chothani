@@ -37,7 +37,7 @@ export default function WhyChoose() {
       {/* optional skyline strip */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[90px] sm:h-[120px] bg-repeat-x bg-bottom opacity-80"
-        style={{ backgroundImage: "url(/Images/why_choose_skyline.webp)" }}
+        // style={{ backgroundImage: "url(/Images/why_choose_skyline.webp)" }}
       />
 
       <div className="relative mx-auto max-w-[1564px] px-4 sm:px-6 lg:px-8 py-16 lg:py-24 mb-[55px]">

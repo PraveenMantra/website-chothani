@@ -7,7 +7,7 @@ const buttons = [
   {
     icon: "/Images/call_chothani.png",
     text: "Call Now",
-    href: "tel:+16479852077",
+    href: "tel:+91 88286 07952",
     barGradient:
       "linear-gradient(180deg,rgba(251, 230, 80, 1) 0%, rgba(201, 140, 8, 1) 100%)",
     barShadow: "0 8px 18px rgba(201,133,0,0.35)",
@@ -17,7 +17,7 @@ const buttons = [
   {
     icon: "/Images/email_chothani.png",
     text: "Email Now",
-    href: "mailto:vjwindowsanddoors@gmail.com",
+    href: "mailto:contactus@avighnaspaces.com",
     barGradient:
       "linear-gradient(180deg,rgba(15, 159, 42, 1) 0%, rgba(4, 84, 27, 1) 100%)",
     barShadow: "0 8px 18px rgba(7,119,28,0.35)",
@@ -27,7 +27,7 @@ const buttons = [
   {
     icon: "/Images/whatsapp.png",
     text: "Chat Now",
-    href: "https://wa.me/+16479852077",
+    href: "https://wa.me/918828607952",
     barGradient:
       "linear-gradient(180deg,rgba(251, 230, 80, 1) 0%, rgba(201, 140, 8, 1) 100%)",
     barShadow: "0 8px 18px rgba(201,133,0,0.35)",
@@ -114,7 +114,7 @@ export default function ScrollActionButtons() {
                   alt={btn.text}
                   width={24}
                   height={24}
-                     className="
+                  className="
       object-contain
       w-[14px] h-[14px] sm:w-[18px] sm:h-[18px] md:w-[22px] md:h-[22px]
       transition-transform duration-300 ease-out

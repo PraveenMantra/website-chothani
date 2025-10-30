@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-// ✅ Validation schema
+/* ---------- Validation ---------- */
 const formSchema = z.object({
   name: z.string().min(2, "Name is too short"),
   mobile: z
@@ -32,110 +32,64 @@ const formSchema = z.object({
   configuration: z.string().optional(),
 });
 
-// ✅ Environment validation helper
-const validateEnvVars = () => {
-  const requiredVars = {
-    apiUrl: process.env.NEXT_PUBLIC_API_URL,
-    sourceEmail: process.env.NEXT_PUBLIC_SOURCE_EMAIL,
-    regardsFrom: process.env.NEXT_PUBLIC_REGARDS_FROM,
-    receiverEmails: process.env.NEXT_PUBLIC_RECEIVER_EMAILS,
-    websiteId: process.env.NEXT_PUBLIC_WEBSITE_ID,
-  };
-
-  const missingVars = Object.entries(requiredVars)
-    .filter(([_, value]) => !value)
-    .map(([key]) => key);
-
-  if (missingVars.length > 0) {
-    console.error("Missing environment variables:", missingVars);
-    toast.error("Configuration Error ⚠️", {
-      description: "Some environment variables are missing. Please contact support.",
-    });
-    return false;
-  }
-
-  return true;
-};
-
-// ✅ Format multiple email receivers
-const formatEmailList = (emails?: string): string[] => {
-  if (!emails) return [];
-  const cleaned = emails.replace(/^\[|\]$/g, "").trim();
-  return cleaned.split(",").map((email) => email.trim());
-};
-
 type FormValues = z.infer<typeof formSchema>;
 
-/* ---------- Animation Variants ---------- */
+/* ---------- Animations ---------- */
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
 };
-
 const fadeInLeft: Variants = {
   hidden: { opacity: 0, x: -60 },
   show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } },
 };
-
 const fadeInRight: Variants = {
   hidden: { opacity: 0, x: 60 },
   show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } },
 };
+
+/* ---------- WhatsApp helper ---------- */
+const WHATSAPP_PHONE = "918828607952"; // +91 88286 07952, without the '+' for wa.me
+
+function buildWhatsAppUrl(values: FormValues) {
+  const lines = [
+    "*New 27 Palazzo Enquiry*",
+    "",
+    `*Name:* ${values.name}`,
+    `*Mobile:* ${values.mobile}`,
+    `*Email:* ${values.email}`,
+    values.configuration ? `*Message:* ${values.configuration}` : undefined,
+    "",
+    "— Sent from 27 Palazzo website",
+  ].filter(Boolean);
+
+  const text = encodeURIComponent(lines.join("\n"));
+  return `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
+}
 
 export default function ContactUsSection() {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      mobile: "",
-      email: "",
-      configuration: "",
-    },
+    defaultValues: { name: "", mobile: "", email: "", configuration: "" },
   });
 
   async function onSubmit(values: FormValues) {
-    if (!validateEnvVars()) return;
-
     setLoading(true);
     try {
-      const contactData = {
-        name: values.name,
-        email: values.email,
-        number: values.mobile,
-        message: values.configuration || "",
-        website_id: process.env.NEXT_PUBLIC_WEBSITE_ID,
-        Source: process.env.NEXT_PUBLIC_SOURCE_EMAIL,
-        regards: process.env.NEXT_PUBLIC_REGARDS_FROM,
-        sendTo: formatEmailList(process.env.NEXT_PUBLIC_RECEIVER_EMAILS),
-        bodytext: "New Contact Request",
-        description: `Name: ${values.name}\nEmail: ${values.email}\nMobile: ${values.mobile}\nMessage: ${values.configuration}`,
-      };
+      const url = buildWhatsAppUrl(values);
+      // Open in a new tab/window so users can return easily
+      window.open(url, "_blank", "noopener,noreferrer");
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/contactus/send-mail`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(contactData),
+      toast.success("Opening WhatsApp ✅", {
+        description: "Your details are prefilled. Please send the message to complete.",
       });
-
-      const data = await res.json();
-      
-
-      // ✅ Handle your API response structure
-      if (data?.status === "success" && data?.results?.status === "success") {
-        toast.success("Message Sent ✅", {
-          description: data?.results?.message || "Thank you for contacting us. We'll get back soon!",
-        });
-        form.reset();
-      } else {
-        throw new Error(data?.message || "Email send failed");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Unable to send message ❌", {
-        description: "Please check your internet or try again later.",
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      toast.error("Unable to open WhatsApp ❌", {
+        description: "Please check your connection or try again later.",
       });
     } finally {
       setLoading(false);
@@ -155,7 +109,7 @@ export default function ContactUsSection() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {/* Left: Building Visual */}
+          {/* Left: Visual */}
           <motion.div
             variants={fadeInLeft}
             className="relative flex-1 lg:basis-[55%] flex justify-center lg:justify-start"
@@ -172,7 +126,7 @@ export default function ContactUsSection() {
             </div>
           </motion.div>
 
-          {/* Right: Contact Form */}
+          {/* Right: Form */}
           <motion.div variants={fadeInRight} className="w-full lg:basis-[40%]">
             <motion.h2
               variants={fadeInUp}
@@ -197,9 +151,7 @@ export default function ContactUsSection() {
                           <FormControl>
                             <Input
                               placeholder={
-                                fieldName === "configuration"
-                                  ? "Message"
-                                  : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+                                fieldName === "configuration" ? "Message" : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
                               }
                               type={fieldName === "email" ? "email" : "text"}
                               inputMode={fieldName === "mobile" ? "tel" : undefined}
@@ -214,25 +166,14 @@ export default function ContactUsSection() {
                   </motion.div>
                 ))}
 
-                <motion.div variants={fadeInUp}>
+                <motion.div
+                  variants={fadeInUp}>
                   <div className="flex justify-end">
-                    <Button
-                      type="submit"
-                      disabled={loading}
-                      className={cn(
-                        "cursor-pointer px-8 py-6 text-base font-semibold rounded-md shadow-md transition-all duration-300",
-                        "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
-                        "hover:opacity-90 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
-                      )}
-                    >
-                      {loading ? (
-                        <span className="flex items-center gap-2">
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Sending...
-                        </span>
-                      ) : (
-                        "SUBMIT"
-                      )}
+                    <Button type="submit" disabled={loading} className={cn("cursor-pointer px-8 py-6 text-base font-semibold rounded-md shadow-md transition-all duration-300", "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white", "hover:opacity-90 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed")} > {loading ? (
+                      <span className="flex items-center gap-2">
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Sending... </span>
+                    ) : ("SUBMIT")}
                     </Button>
                   </div>
                 </motion.div>
