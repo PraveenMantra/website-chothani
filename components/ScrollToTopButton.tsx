@@ -56,7 +56,7 @@ export default function ScrollToTopButton({ showAfter = 300 }: Props) {
             className="group relative w-12 h-12 md:w-14 md:h-14 rounded-xl
                        shadow-lg hover:bg-[#f7e37d]
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3d567]/80
-                       transition-colors"
+                       transition-colors cursor-pointer"
             style={{
               background:
                 "linear-gradient(180deg, rgba(251, 230, 80, 1) 0%, rgba(201, 140, 8, 1) 100%)",
