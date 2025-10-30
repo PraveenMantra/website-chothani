@@ -220,7 +220,7 @@ small {
   overflow: hidden;
 
   /* only building background */
-  background-image: url("/Images/chothani_Homebg.jpg");
+  background-image: url("/Images/chothani_Homebg.webp");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
