@@ -265,6 +265,7 @@ export default function Nav() {
             ))}
           </ul>
         </nav>
+        
         <div className="flex items-center gap-3">
           <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
             <InstagramSVG />
