@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { GalleriesByTab } from "@/lib/galleries";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
 
 /* ------------------ Data ------------------ */
 type CardItem = { id: string; title: string; image: string };
@@ -34,34 +32,14 @@ const staggerContainer: Variants = {
 /* ------------------ Component ------------------ */
 export default function AmenitiesCarousel({ initialData }: { initialData: GalleriesByTab }) {
   const [tab, setTab] = useState<TabKey>("amenities");
-  const [open, setOpen] = useState(false);
-
+  
   // Seed from server data
   const [dataByTab, setDataByTab] = useState<GalleriesByTab>(initialData);
   const items = useMemo(() => dataByTab[tab], [dataByTab, tab]);
 
-  // Get current viewport width for responsive behavior
-  const [viewportWidth, setViewportWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  );
-
-  // Update viewport width on resize
-  useEffect(() => {
-    const handleResize = () => setViewportWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Calculate visible slides based on viewport width
-  const getVisibleSlides = () => {
-    if (viewportWidth >= 1024) return 3; // desktop
-    if (viewportWidth >= 640) return 2;  // tablet
-    return 1; // mobile
-  };
-
-  // Embla setup with responsive looping based on visible slides
+  // Embla setup with conditional looping based on slide count
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: items.length > getVisibleSlides(), // Enable loop if we have more slides than visible
+    loop: items.length > 3, // Only enable loop if we have more than 3 items
     align: "start",
     slidesToScroll: 1,
     containScroll: "trimSnaps",
@@ -95,26 +73,23 @@ export default function AmenitiesCarousel({ initialData }: { initialData: Galler
     emblaApi?.reInit();
   }, [emblaApi, items.length, tab]);
 
-  // Improved autoplay with responsive handling of looping
+  // Improved autoplay with better handling of looping
   useEffect(() => {
-    const visibleSlides = getVisibleSlides();
-
-    // Only autoplay if we have more slides than what's visible
-    if (!emblaApi || !isPlaying || items.length <= visibleSlides) return;
-
+    if (!emblaApi || !isPlaying || items.length <= 3) return;
+    
     const id = setInterval(() => {
       if (emblaApi.canScrollNext()) {
         emblaApi.scrollNext();
       } else {
-        // Only loop if we have more slides than visible
-        if (items.length > visibleSlides) {
+        // Only loop if we have enough slides
+        if (items.length > 3) {
           emblaApi.scrollTo(0);
         }
       }
-    }, 4000); // 4 second interval for good UX
-
+    }, 4000); // Slightly longer interval for better UX
+    
     return () => clearInterval(id);
-  }, [emblaApi, isPlaying, items.length, viewportWidth]); // Added viewportWidth dependency
+  }, [emblaApi, isPlaying, items.length]);
 
   const handleMouseEnter = () => setIsPlaying(false);
   const handleMouseLeave = () => setIsPlaying(true);
@@ -148,9 +123,9 @@ export default function AmenitiesCarousel({ initialData }: { initialData: Galler
             className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3 sm:gap-4"
             variants={fadeUp}
           >
-            {/* <TabButton active={tab === "floorPlans"} onClick={() => setTab("floorPlans")}>
+            <TabButton active={tab === "floorPlans"} onClick={() => setTab("floorPlans")}>
               FLOOR PLANS
-            </TabButton> */}
+            </TabButton>
             <TabButton active={tab === "amenities"} onClick={() => setTab("amenities")}>
               AMENITIES
             </TabButton>
@@ -231,34 +206,7 @@ export default function AmenitiesCarousel({ initialData }: { initialData: Galler
             </div>
           </motion.div>
         </motion.div>
-        <div className="flex flex-col items-center justify-center">
-          <h2
-            className="font-semibold text-[#10410f] tracking-tight text-center"
-            style={{ fontSize: "clamp(22px, 3.2vw, 38px)" }}
-          >
-            FLOOR PLANS
-          </h2>
-
-          <div onClick={() => setOpen(true)} className="cursor-pointer">
-            <img src="images/Floor_Plan.webp" alt="Big Floor Plan" />
-          </div>
-        </div>
-        <br />
-        <br className="sm:block hidden"/>
       </div>
-      <Lightbox
-        open={open}
-        close={() => setOpen(false)}
-        slides={[
-          { src: "images/Floor_Plan.webp", width: 1200, height: 800 },
-        ]}
-        styles={{ container: { backgroundColor: "rgba(0, 0, 0, 0.8)" } }}
-        render={{
-          buttonPrev: () => null,
-          buttonNext: () => null,
-        }}
-        controller={{ closeOnPullDown: true, closeOnBackdropClick: true, disableSwipeNavigation: true }}
-      />
     </section>
   );
 }

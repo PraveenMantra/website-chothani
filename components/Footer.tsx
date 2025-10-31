@@ -136,7 +136,7 @@ export default function Footer() {
               <h3 className="text-white font-semibold text-2xl mb-6">Contact Us</h3>
               <div className="flex items-center lg:items-start justify-center lg:justify-start gap-3 mb-4">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image src="/Images/call.png" alt="Call" width={32} height={32} className="object-contain w-full h-full" />
+                  <Image src="/Images/call.png" alt="Call" width={32} height={32} className="object-contain max-w-5" />
                 </span>
                 <a href="tel:+918828607952" className="hover:underline">
                   +91 88286 07952
@@ -144,7 +144,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center lg:items-start justify-center lg:justify-start gap-3 mb-6">
                 <span className="inline-flex h-8 w-8 items-center justify-center">
-                  <Image src="/Images/sms.png" alt="Mail" width={32} height={32} className="object-contain w-full h-full" />
+                  <Image src="/Images/sms.png" alt="Mail" width={32} height={32} className="object-contain max-w-5" />
                 </span>
                 <a href="mailto:contactus@avighnaspaces.com" className="hover:underline">
                   contactus@avighnaspaces.com
