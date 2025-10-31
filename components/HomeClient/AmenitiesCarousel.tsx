@@ -240,7 +240,7 @@ export default function AmenitiesCarousel({ initialData }: { initialData: Galler
           </h2>
 
           <div onClick={() => setOpen(true)} className="cursor-pointer">
-            <img src="images/Floor_Plan.webp" alt="Big Floor Plan" />
+            <Image src="/Images/Floor_Plan.webp" alt="Big Floor Plan" width={500} height={500} />
           </div>
         </div>
         <br />
@@ -250,7 +250,7 @@ export default function AmenitiesCarousel({ initialData }: { initialData: Galler
         open={open}
         close={() => setOpen(false)}
         slides={[
-          { src: "images/Floor_Plan.webp", width: 1200, height: 800 },
+          { src: "/Images/Floor_Plan.webp", width: 1200, height: 800 },
         ]}
         styles={{ container: { backgroundColor: "rgba(0, 0, 0, 0.8)" } }}
         render={{
