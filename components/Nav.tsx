@@ -214,10 +214,22 @@ export default function Nav() {
         </nav>
         <div className="flex items-center gap-3">
           <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
-           <Instagram color="white"/> 
+           <Image
+              src="/Images/insta_color.webp"
+              alt="Google Map Location"
+              width={50}
+              height={50}
+              className="w-11"
+            />
           </SocialIcon>
           <SocialIcon href={FACEBOOK_URL} label="Open Facebook">
-            <Facebook  color="white"/>
+            <Image
+              src="/Images/facebook_color.webp"
+              alt="Google Map Location"
+              width={50}
+              height={50}
+              className="w-11"
+            />
           </SocialIcon>
 
           <Link
@@ -229,9 +241,9 @@ export default function Nav() {
             <Image
               src="/Images/map.png"
               alt="Google Map Location"
-              width={23.33}
-              height={23.33}
-              className="w-[23.33px] h-[23.33px]"
+              width={50}
+              height={50}
+              className="w-11"
             />
           </Link>
         </div>
@@ -375,10 +387,20 @@ export default function Nav() {
             {/* Social icons row */}
             <div className="flex items-center justify-center gap-6 mb-4">
               <SocialIcon href={INSTAGRAM_URL} label="Open Instagram">
-                <Instagram color="white"/>
+                <Image
+              src="/Images/insta_color.webp"
+              alt="Google Map Location"
+              width={18} height={18}
+              // className="w-[23.33px] h-[23.33px]"
+            />
               </SocialIcon>
               <SocialIcon href={FACEBOOK_URL} label="Open Facebook">
-                <Facebook color="white"/>
+                <Image
+              src="/Images/facebook_color.webp"
+              alt="Google Map Location"
+              width={18} height={18}
+              // className="w-[23.33px] h-[23.33px]"
+            />
               </SocialIcon>
             </div>
 
