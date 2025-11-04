@@ -22,8 +22,6 @@ const mapCategoryToTab = (cat?: string): TabKey | null => {
 export async function fetchGalleriesByTab(): Promise<GalleriesByTab> {
   if (!WEBSITE_ID || !TOKEN) throw new Error("Missing MANTRA env vars");
 
-  console.log("API_URL===>>>", API_URL);
-
   const res = await fetch(API_URL, {
     headers: { Authorization: `Bearer ${TOKEN}` },
     cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
@@ -31,8 +29,6 @@ export async function fetchGalleriesByTab(): Promise<GalleriesByTab> {
 
   if (!res.ok) throw new Error(`Galleries HTTP ${res.status}`);
   const json = await res.json();
-
-  console.log("json===>>>", json);
 
   const next: GalleriesByTab = { floorPlans: [], amenities: [], elevation: [] };
   for (const d of (json?.data ?? []) as any[]) {
