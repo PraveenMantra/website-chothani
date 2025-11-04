@@ -63,6 +63,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ScrollToTopButton />
         <ScrollActionButtons />
 
+        <Script
+          id="mantra-analytics"
+          src="https://mantracollab-cdns.s3.ca-central-1.amazonaws.com/mantra-smb-analytics-client-cdn.js"
+          strategy="afterInteractive"
+          data-website-id="68f879a69a28f4f0434c62b1"
+        />
+
         {/* Plugin Script */}
         {/* <Script
           src="https://mantracollab-cdns.s3.ca-central-1.amazonaws.com/comment-widget.min.js"

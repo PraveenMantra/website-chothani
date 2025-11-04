@@ -5,7 +5,7 @@ export type GalleriesByTab = Record<TabKey, CardItem[]>;
 // ✅ keep WEBSITE_ID server-side (no NEXT_PUBLIC)
 const BASE_URL = process.env.NEXT_PUBLIC_SMB_API_URL || "https://smb.mantracollab.com/api/v1";
 const WEBSITE_ID = process.env.NEXT_PUBLIC_WEBSITE_ID!;
-const TOKEN = process.env.CHOTHANI_API_TOKEN!;
+const TOKEN = process.env.NEXT_PUBLIC_CHOTHANI_API_TOKEN!;
 // ✅ Compose the full API endpoint dynamically
 const API_URL = `${BASE_URL}/websites/${WEBSITE_ID}/galleries`;
 
