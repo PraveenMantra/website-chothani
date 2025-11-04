@@ -5,7 +5,7 @@ export type GalleriesByTab = Record<TabKey, CardItem[]>;
 // ✅ keep WEBSITE_ID server-side (no NEXT_PUBLIC)
 const BASE_URL = process.env.NEXT_PUBLIC_SMB_API_URL || "https://smb.mantracollab.com/api/v1";
 const WEBSITE_ID = process.env.NEXT_PUBLIC_WEBSITE_ID!;
-const TOKEN = process.env.CHOTHANI_API_TOKEN!;
+const TOKEN = process.env.NEXT_PUBLIC_CHOTHANI_API_TOKEN!;
 // ✅ Compose the full API endpoint dynamically
 const API_URL = `${BASE_URL}/websites/${WEBSITE_ID}/galleries`;
 
@@ -29,7 +29,7 @@ export async function fetchGalleriesByTab(): Promise<GalleriesByTab> {
 
   if (!res.ok) throw new Error(`Galleries HTTP ${res.status}`);
   const json = await res.json();
-  
+
   const next: GalleriesByTab = { floorPlans: [], amenities: [], elevation: [] };
   for (const d of (json?.data ?? []) as any[]) {
     const tab = mapCategoryToTab(d?.category);
