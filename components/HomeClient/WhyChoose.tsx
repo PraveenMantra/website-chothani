@@ -24,7 +24,7 @@ const popUp: Variants = {
   },
 };
 
-export default function WhyChoose() {
+export default function WhyChoose({ handlePopup }: { handlePopup: () => void }) {
   const { scrollY } = useScroll();
   const yRaw = useTransform(scrollY, [0, 800], [0, 80]); // map 0–800px scroll → 0–80px shift
   const y = useSpring(yRaw, { stiffness: 120, damping: 24, mass: 0.2 });
@@ -98,8 +98,8 @@ export default function WhyChoose() {
             className="absolute left-1/2 -translate-x-1/2"
             style={{ bottom: "calc(var(--spacing) * -23)" }} // ✅ Custom bottom offset
           >
-            <a
-              href="#contact-us"
+            <button
+              onClick={handlePopup}
               className="inline-block rounded-[6px] px-8 py-3 font-semibold text-white
       shadow-[0_12px_28px_rgba(0,0,0,0.18)]
       border border-[#f6d789] transition
@@ -110,7 +110,7 @@ export default function WhyChoose() {
               }}
             >
               KNOW MORE
-            </a>
+            </button>
           </motion.div>
 
         </div>
@@ -130,8 +130,8 @@ export default function WhyChoose() {
           </div>
 
           <div className="mt-8 flex justify-center">
-            <a
-              href="#contact-us"
+            <button
+              onClick={handlePopup}
               className="inline-block rounded-xl px-8 py-3 font-semibold text-black
                          shadow-[0_12px_28px_rgba(0,0,0,0.18)]
                          border border-[#D8A018]/50 transition
@@ -142,7 +142,7 @@ export default function WhyChoose() {
               }}
             >
               KNOW MORE
-            </a>
+            </button>
           </div>
         </div>
       </div>

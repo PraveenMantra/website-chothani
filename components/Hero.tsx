@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Reveal from "./Reveal";
 
-export default function Hero() {
+export default function Hero({ handlePopup }: { handlePopup: () => void }) {
   return (
     <section className="relative overflow-hidden">
       <div className="relative hero">
@@ -57,8 +57,8 @@ export default function Hero() {
 
               {/* CTA Button */}
               <div className="mt-5 mb-[35px] md:mb-0 flex justify-center md:justify-start">
-                <Link
-                  href="#contact-us"
+                <button
+                  onClick={handlePopup}
                   className="inline-block rounded-lg px-6 py-3 font-semibold text-white
                   bg-gradient-to-b from-[#f3cb47] via-[#d9a026] to-[#bb7202]
                   border border-[#f6d789]
@@ -66,7 +66,7 @@ export default function Hero() {
                   hover:scale-[1.02] active:scale-95 transition"
                 >
                   BOOK A SITE VISIT TODAY
-                </Link>
+                </button>
               </div>
             </Reveal>
 

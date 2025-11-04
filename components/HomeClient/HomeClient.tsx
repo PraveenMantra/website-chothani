@@ -1,7 +1,7 @@
 "use client";
 
 // import { useCommentsPage } from '@/hooks/useCommentsPage';
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Footer from '../Footer';
 import Hero from '../Hero';
 import ProjectOverview from '../ProjectOverview';
@@ -14,18 +14,33 @@ import ContactUsSection from './ContactUsSection';
 import StatsTiles from './StatsTiles';
 import DisclaimerSection from './DisclaimerSection';
 import { GalleriesByTab } from '@/lib/galleries';
+import PopupForm from '../PopupForm';
 
 export default function HomeClient({ galleriesByTab }: { galleriesByTab: GalleriesByTab }) {
+    const [showPopup, setShowPopup] = useState(false);
+
+    const handlePopup = () => {
+        setShowPopup(!showPopup);
+    }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowPopup(true);
+        }, 7000); // 7 seconds
+
+        return () => clearTimeout(timer); // Clear timeout if component unmounts
+    }, []);
+
     // useCommentsPage("Home");
     return (
         <>
             <main className="bg-white">
-                <Hero />
+                <Hero handlePopup={handlePopup} />
                 <GreenMap />
-                <WhyChoose />
+                <WhyChoose handlePopup={handlePopup} />
                 <ConnectivityHighlights />
                 <AmenitiesCarousel initialData={galleriesByTab}/>
-                <LocationSection />
+                <LocationSection handlePopup={handlePopup} />
                 <ContactUsSection />
                 <StatsTiles />
                 <DisclaimerSection />
@@ -33,6 +48,7 @@ export default function HomeClient({ galleriesByTab }: { galleriesByTab: Galleri
             <footer>
                 <Footer />
             </footer>
+            {showPopup && <PopupForm onClose={handlePopup} />}
         </>
     )
 }
