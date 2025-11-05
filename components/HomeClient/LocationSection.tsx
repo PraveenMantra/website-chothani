@@ -27,7 +27,8 @@ export default function LocationSection({
   ctaLabel = "KNOW MORE",
   bgImage = "/Images/location_bg.webp",
   mapImage = "/Images/map_location.png",
-}: Props) {
+  handlePopup
+}: Props & { handlePopup: () => void }) {
   const reduce = useReducedMotion();
 
   const fadeUp: Variants = {
@@ -88,14 +89,12 @@ export default function LocationSection({
             {description}
           </p>
 
-          <Button asChild className={cn(
+          <Button className={cn(
             "mt-8 px-8 py-6 text-base font-semibold shadow-md",
             "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
             "hover:opacity-90"
-          )}>
-            <Link href={ctaHref} target="_blank" rel="noopener noreferrer">
-              {ctaLabel}
-            </Link>
+          )} onClick={handlePopup}>
+            {ctaLabel}
           </Button>
         </motion.div>
 
@@ -114,6 +113,8 @@ export default function LocationSection({
               loading="lazy"          // ✅ lazy load for performance
               sizes="(min-width: 1024px) 560px, 90vw"
             />
+
+            {/* <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d792.8231362575912!2d72.90391893324231!3d19.049502207091855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c603851cd013%3A0x2bc37a98aab3f66!2s27%2C%20Union%20Park%2C%20Chembur%2C%20Mumbai%2C%20Maharashtra%20400071!5e0!3m2!1sen!2sin!4v1762175913398!5m2!1sen!2sin" width="600" height="450" loading="lazy"></iframe> */}
           </div>
         </motion.div>
       </motion.div>

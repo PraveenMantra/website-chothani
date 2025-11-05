@@ -223,7 +223,7 @@ export default function AmenitiesCarousel({ initialData }: { initialData: Galler
                       onTouchStart={() => setIsPlaying(false)}
                       onTouchEnd={() => setIsPlaying(true)}
                     >
-                      <Card title={item.title} image={item.image} />
+                      <Card title={item.title} image={item.image} tab={tab} />
                     </div>
                   ))}
                 </div>
@@ -291,7 +291,7 @@ function TabButton({
 }
 
 /* -------------- Card -------------- */
-function Card({ title, image }: { title: string; image: string }) {
+function Card({ title, image, tab }: { title: string; image: string; tab: TabKey }) {
   return (
     <motion.article
       data-card="true"
@@ -327,23 +327,25 @@ function Card({ title, image }: { title: string; image: string }) {
               priority
             />
             {/* Title overlay */}
-            <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
-              <div
-                className="
+            {tab === "amenities" && (
+              <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
+                <div
+                  className="
                   w-full max-w-[88%]
                   rounded-[10px]
                   text-center text-[18px] font-bold text-black
                   px-4 py-2
                   shadow-[0_6px_18px_rgba(0,0,0,0.15)] cursor-pointer
                 "
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(232,129,4,1) 0%, rgba(244,209,112,1) 50%, rgba(232,129,4,1) 100%)",
-                }}
-              >
-                {title}
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(232,129,4,1) 0%, rgba(244,209,112,1) 50%, rgba(232,129,4,1) 100%)",
+                  }}
+                >
+                  {title}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
