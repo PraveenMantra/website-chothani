@@ -24,7 +24,8 @@ export async function fetchGalleriesByTab(): Promise<GalleriesByTab> {
 
   const res = await fetch(API_URL, {
     headers: { Authorization: `Bearer ${TOKEN}` },
-    cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+    // cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+    cache: "no-store",
   });
 
   if (!res.ok) throw new Error(`Galleries HTTP ${res.status}`);
