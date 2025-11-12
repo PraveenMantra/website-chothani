@@ -31,9 +31,9 @@ const CARDS: Card[] = [
     title: "Healthcare",
     iconSrc: "/Images/healthcare.png",
     points: [
-      { label: "Tata Hospital", value: "10 mins" },
-      { label: "Hinduja Hospital", value: "30 mins" },
+      { label: "Zen Hospital", value: "10 mins" },
       { label: "Asian Heart Institute", value: "20 mins" },
+      { label: "Hinduja Hospital", value: "30 mins" },
     ],
   },
 ];
