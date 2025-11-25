@@ -158,7 +158,7 @@ export default function Footer() {
                       "linear-gradient(90deg,rgba(199, 112, 3, 1) 0%, rgba(254, 235, 146, 1) 69%, rgba(255, 232, 69, 1) 100%)",
                   }}
                 >
-                  Schedule your visit today and experience luxury living at 27 Pallazzo.
+                  Schedule your visit today and experience luxury living at 27 Pallazzo
                 </div>
               </div>
             </motion.div>
