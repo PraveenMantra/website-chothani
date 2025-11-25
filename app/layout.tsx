@@ -8,7 +8,10 @@ import ScrollActionButtons from "@/components/ScrollActionButtons";
 import Script from "next/script";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 // Set this in .env(.local): NEXT_PUBLIC_SITE_URL=https://27palazzo.in
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -16,11 +19,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "27 Palazzo | Luxury 3 BHK Residences in Chembur East, Mumbai",
+    default: "27 Pallazzo Chembur – Spacious 3 BHK Luxury Residences",
     template: "%s | 27 Palazzo",
   },
   description:
-    "Discover 27 Palazzo — luxury 3 BHK residences in Chembur East offering 1500 sq. ft. carpet area apartments starting from ₹6 Cr++.",
+    "Experience premium 3 BHK living at 27 Pallazzo, Chembur. Spacious 1500 sq. ft. residences with golf course views, modern amenities & excellent Mumbai connectivity.",
   alternates: {
     canonical: "/",
   },
@@ -52,10 +55,16 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.ico" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         {/* Place Nav before children so it layers above sections cleanly */}
         <Nav />
         {children}
@@ -71,10 +80,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
 
         {/* Plugin Script */}
-        {/* <Script
+        <Script
           src="https://mantracollab-cdns.s3.ca-central-1.amazonaws.com/comment-widget.min.js"
           strategy="afterInteractive"
-        /> */}
+        />
       </body>
     </html>
   );
