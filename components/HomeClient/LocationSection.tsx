@@ -104,16 +104,6 @@ export default function LocationSection({
           className="w-full lg:w-1/2 flex justify-center lg:justify-end"
         >
           <div className="relative rounded-2xl border-[6px] border-[#10410f] overflow-hidden shadow-lg">
-            {/* <Image
-              src={mapImage}
-              alt="Map location"
-              width={720}
-              height={480}
-              className="object-cover w-full h-auto"
-              loading="lazy"          // ✅ lazy load for performance
-              sizes="(min-width: 1024px) 560px, 90vw"
-            /> */}
-
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d792.8231362575912!2d72.90391893324231!3d19.049502207091855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c603851cd013%3A0x2bc37a98aab3f66!2s27%2C%20Union%20Park%2C%20Chembur%2C%20Mumbai%2C%20Maharashtra%20400071!5e0!3m2!1sen!2sin!4v1762175913398!5m2!1sen!2sin" width="620" height="420" loading="lazy"></iframe>
           </div>
         </motion.div>
