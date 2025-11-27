@@ -179,11 +179,12 @@ export default function Nav() {
           }}
         >
           <Image
-            src="/Images/Chothani_Logo.png"
+            src="/Images/chot2New.png"
             alt="Chothani Logo"
             width={75}
             height={54}
             priority
+            quality={100}
           />
         </Link>
 
@@ -276,11 +277,12 @@ export default function Nav() {
           aria-label="Home"
         >
           <Image
-            src="/Images/Chothani_Logo.png"
+            src="/Images/chot2New.png"
             alt="Chothani Logo"
-            width={72}
-            height={52}
+            width={75}
+            height={54}
             priority
+            quality={100}
           />
         </Link>
 
@@ -302,11 +304,11 @@ export default function Nav() {
         </Link>
 
         {/* Overlay */}
-        <div
+        {/* <div
           className={`fixed inset-0 bg-black/45 backdrop-blur-sm transition-opacity z-40 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
             }`}
           onClick={() => setIsOpen(false)}
-        />
+        /> */}
 
         {/* Drawer */}
         <aside
@@ -323,10 +325,10 @@ export default function Nav() {
           <div className="flex items-center justify-between px-4 pb-3">
             <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home">
               <Image
-                src="/Images/Chothani_Logo.png"
+                src="/Images/chot2New.png"
                 alt="Chothani Logo"
-                width={70}
-                height={50}
+                width={175}
+                height={154}
                 priority
               />
             </Link>

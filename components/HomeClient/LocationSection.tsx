@@ -27,7 +27,8 @@ export default function LocationSection({
   ctaLabel = "KNOW MORE",
   bgImage = "/Images/location_bg.webp",
   mapImage = "/Images/map_location.png",
-}: Props) {
+  handlePopup
+}: Props & { handlePopup: () => void }) {
   const reduce = useReducedMotion();
 
   const fadeUp: Variants = {
@@ -88,14 +89,12 @@ export default function LocationSection({
             {description}
           </p>
 
-          <Button asChild className={cn(
+          <Button className={cn(
             "mt-8 px-8 py-6 text-base font-semibold shadow-md",
             "bg-gradient-to-b from-[#F0B12B] to-[#B47009] text-white",
             "hover:opacity-90"
-          )}>
-            <Link href={ctaHref} target="_blank" rel="noopener noreferrer">
-              {ctaLabel}
-            </Link>
+          )} onClick={handlePopup}>
+            {ctaLabel}
           </Button>
         </motion.div>
 
