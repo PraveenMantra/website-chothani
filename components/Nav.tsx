@@ -179,7 +179,7 @@ export default function Nav() {
           }}
         >
           <Image
-            src="/Images/Chothani_Logo.png"
+            src="/Images/chot2New.png"
             alt="Chothani Logo"
             width={75}
             height={54}
@@ -277,7 +277,7 @@ export default function Nav() {
           aria-label="Home"
         >
           <Image
-            src="/Images/Chothani_Logo.png"
+            src="/Images/chot2New.png"
             alt="Chothani Logo"
             width={75}
             height={54}
@@ -325,10 +325,10 @@ export default function Nav() {
           <div className="flex items-center justify-between px-4 pb-3">
             <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home">
               <Image
-                src="/Images/Chothani_Logo.png"
+                src="/Images/chot2New.png"
                 alt="Chothani Logo"
-                width={75}
-                height={54}
+                width={175}
+                height={154}
                 priority
               />
             </Link>

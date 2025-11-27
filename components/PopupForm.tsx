@@ -35,7 +35,7 @@ export default function PopupForm({ onClose }: { onClose: () => void }) {
         >&times;</button>
         <h3 className="font-bold mb-4 text-[24px] lg:text-[24px] tracking-wide text-center">CONTACT US</h3>
         <div className="flex flex-row items-center justify-center gap-6 mb-4 lg:mb-[1vw] ">
-          <Image width={100} height={70} src="/Images/Chothani_Logo.png" alt="RK Logo" className="w-[25vw] sm:w-[18vw] lg:w-[7vw] object-contain rounded-lg p-4 bg-green-900" />
+          <Image width={150} height={120} src="/Images/chot2New.png" alt="RK Logo" className="w-[25vw] sm:w-[18vw] lg:w-[7vw] object-contain rounded-lg p-4 bg-green-900" />
         </div>
         {submitted ? (
           <div className="text-center text-[#111]">
